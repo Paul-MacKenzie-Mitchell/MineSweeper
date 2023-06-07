@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class Cell extends JButton {
     //types: 0 = blank, 1 = Mine, 2= Number
@@ -7,11 +9,37 @@ public class Cell extends JButton {
     private boolean discovered;
     private boolean flagged;
 
-    public Cell(int type, int position, boolean discovered, boolean flagged) {
+    private Handler handler;
+
+    public Cell(int type, int position, boolean discovered, boolean flagged, Handler handler) {
         this.type = type;
         this.position = position;
         this.discovered = discovered;
         this.flagged = flagged;
+        this.handler = handler;
+
+        addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(SwingUtilities.isRightMouseButton(e)) {
+                        rightClickButton();
+                } else {
+                    clickButton();
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {}
+
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+
+            @Override
+            public void mouseExited(MouseEvent e) {}
+        });
     }
 
     public int getType() {
@@ -44,5 +72,12 @@ public class Cell extends JButton {
 
     public void setFlagged(boolean flagged) {
         this.flagged = flagged;
+    }
+
+    public void clickButton() {
+        handler.click(this);
+    }
+    public void rightClickButton() {
+        handler.rightClick(this);
     }
 }

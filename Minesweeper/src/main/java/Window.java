@@ -5,7 +5,43 @@ public class Window {
     private static JFrame frame;
     private static String title;
 
+    private static int width;
+    private static int height;
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public void setFrame(JFrame frame) {
+        Window.frame = frame;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        Window.title = title;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        Window.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        Window.height = height;
+    }
+
     public Window(int width, int height, int gridSize, String title, Game game, Handler handler) {
+        Window.width = width;
+        Window.height = height;
         Window.title = title;
         frame = new JFrame(title);
 

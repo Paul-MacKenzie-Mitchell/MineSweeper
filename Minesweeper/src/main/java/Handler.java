@@ -1,10 +1,13 @@
 import java.util.ArrayList;
 
 public class Handler {
-
     private ArrayList<Cell> current = new ArrayList<Cell>();
     private ArrayList<Cell> queue = new ArrayList<Cell>();
     private static int flaggedCells = 0;
+
+    public boolean isOnLeftColumn(int position) {
+        return position % Game.GRIDSIZE == 0;
+    }
     public void click(Cell cell) {
         int discoveredCells = 0;
         if (!cell.isFlagged()) {
@@ -16,85 +19,24 @@ public class Handler {
             if (cell.getType() == 0) {
                 //if cell is on first row
                 if(position < Game.GRIDSIZE) {
-                    //if the cell is in the top left
-                    if (position % Game.GRIDSIZE ==0) {
-                        queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE)));
-                        queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE + 1)));
-                        queue.add(Grid.cellGrid.get((position + 1)));
-                    //if the cell is in the top right
-                    } else if (position % Game.GRIDSIZE == Game.GRIDSIZE - 1) {
-                        queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE)));
-                        queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE - 1)));
-                        queue.add(Grid.cellGrid.get((position - 1)));
-                    } else {
-                        queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE)));
-                        queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE + 1)));
-                        queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE - 1)));
-                        queue.add(Grid.cellGrid.get((position + 1)));
-                        queue.add(Grid.cellGrid.get((position - 1)));
-                    }
-                    //if the cell is in the bottom row
+                    queueIfTopRow(position);
+//                    //if the cell is in the bottom row
                 } else if (position >= (Game.GRIDSIZE * (Game.GRIDSIZE -1))) {
-                    //if the cell is in the bottom left
-                    if (position % Game.GRIDSIZE ==0) {
-                        queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE)));
-                        queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE + 1)));
-                        queue.add(Grid.cellGrid.get((position + 1)));
-                        //if the cell is in the bottom right
-                    } else if (position % Game.GRIDSIZE == Game.GRIDSIZE - 1) {
-                        queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE)));
-                        queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE - 1)));
-                        queue.add(Grid.cellGrid.get((position - 1)));
-                    } else {
-                        queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE)));
-                        queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE + 1)));
-                        queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE - 1)));
-                        queue.add(Grid.cellGrid.get((position + 1)));
-                        queue.add(Grid.cellGrid.get((position - 1)));
-                    }
+                    queueIfBottomRow(position);
                 //if cells on left most column
                 } else if (position % Game.GRIDSIZE == 0) {
-                    queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE + 1)));
-                    queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE)));
-                    queue.add(Grid.cellGrid.get((position + 1)));
-                    queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE + 1)));
-                    queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE)));
+                    queueIfLeftColumn(position);
                 //if cells on right most column
                 } else if (position % Game.GRIDSIZE == Game.GRIDSIZE - 1) {
-                    queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE - 1)));
-                    queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE)));
-                    queue.add(Grid.cellGrid.get((position - 1)));
-                    queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE - 1)));
-                    queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE)));
+                    queueIfRightColumn(position);
                 //if cell is not on edge of grid
                 } else {
-                    queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE + 1)));
-                    queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE)));
-                    queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE - 1)));
-                    queue.add(Grid.cellGrid.get((position - 1)));
-                    queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE - 1)));
-                    queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE)));
-                    queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE + 1)));
-                    queue.add(Grid.cellGrid.get((position + 1)));
+                    queueIfNotOnEdge(position);
                 }
             } else if (cell.getType() == 2) {
                 int dangerCount = 0;
                 if (position < Game.GRIDSIZE) {
-                    if(position % Game.GRIDSIZE == 0) {
-                        if (Grid.cellGrid.get((position +Game.GRIDSIZE + 1)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position +Game.GRIDSIZE)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position + 1)).getType() == 1) dangerCount ++;
-                    } else if (position % Game.GRIDSIZE == Game.GRIDSIZE - 1) {
-                        if (Grid.cellGrid.get((position +Game.GRIDSIZE - 1)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position +Game.GRIDSIZE)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position - 1)).getType() == 1) dangerCount ++;
-                    } else {
-                        if (Grid.cellGrid.get((position +Game.GRIDSIZE + 1)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position +Game.GRIDSIZE - 1)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position +Game.GRIDSIZE)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position + 1)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position - 1)).getType() == 1) dangerCount ++;
-                    }
+                    dangerCount = setDangerCountTopRow(position);
                 } else if (position >= (Game.GRIDSIZE *(Game.GRIDSIZE -1))) {
                     if(position % Game.GRIDSIZE == 0) {
                         if (Grid.cellGrid.get((position - Game.GRIDSIZE + 1)).getType() == 1) dangerCount ++;
@@ -176,6 +118,91 @@ public class Handler {
         }
     }
 
+    public void queueIfTopRow(int position) {
+        if (position % Game.GRIDSIZE ==0) {
+            queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE)));
+            queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE + 1)));
+            queue.add(Grid.cellGrid.get((position + 1)));
+            //if the cell is in the top right
+        } else if (position % Game.GRIDSIZE == Game.GRIDSIZE - 1) {
+            queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE)));
+            queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE - 1)));
+            queue.add(Grid.cellGrid.get((position - 1)));
+        } else {
+            queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE)));
+            queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE + 1)));
+            queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE - 1)));
+            queue.add(Grid.cellGrid.get((position + 1)));
+            queue.add(Grid.cellGrid.get((position - 1)));
+        }
+    }
+
+    public void queueIfBottomRow(int position) {
+        //if the cell is in the bottom left
+        if (position % Game.GRIDSIZE ==0) {
+            queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE)));
+            queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE + 1)));
+            queue.add(Grid.cellGrid.get((position + 1)));
+            //if the cell is in the bottom right
+        } else if (position % Game.GRIDSIZE == Game.GRIDSIZE - 1) {
+            queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE)));
+            queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE - 1)));
+            queue.add(Grid.cellGrid.get((position - 1)));
+        } else {
+            queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE)));
+            queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE + 1)));
+            queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE - 1)));
+            queue.add(Grid.cellGrid.get((position + 1)));
+            queue.add(Grid.cellGrid.get((position - 1)));
+        }
+    }
+
+    public void queueIfLeftColumn(int position) {
+        queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE + 1)));
+        queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE)));
+        queue.add(Grid.cellGrid.get((position + 1)));
+        queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE + 1)));
+        queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE)));
+    }
+
+    public void queueIfRightColumn(int position) {
+        queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE - 1)));
+        queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE)));
+        queue.add(Grid.cellGrid.get((position - 1)));
+        queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE - 1)));
+        queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE)));
+    }
+
+    public void queueIfNotOnEdge(int position) {
+        queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE + 1)));
+        queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE)));
+        queue.add(Grid.cellGrid.get((position - Game.GRIDSIZE - 1)));
+        queue.add(Grid.cellGrid.get((position - 1)));
+        queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE - 1)));
+        queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE)));
+        queue.add(Grid.cellGrid.get((position + Game.GRIDSIZE + 1)));
+        queue.add(Grid.cellGrid.get((position + 1)));
+    }
+
+    public int setDangerCountTopRow(int position) {
+        int dangerCount = 0;
+        if(position % Game.GRIDSIZE == 0) {
+            if (Grid.cellGrid.get((position +Game.GRIDSIZE + 1)).getType() == 1) dangerCount ++;
+            if (Grid.cellGrid.get((position +Game.GRIDSIZE)).getType() == 1) dangerCount ++;
+            if (Grid.cellGrid.get((position + 1)).getType() == 1) dangerCount ++;
+        } else if (position % Game.GRIDSIZE == Game.GRIDSIZE - 1) {
+            if (Grid.cellGrid.get((position +Game.GRIDSIZE - 1)).getType() == 1) dangerCount ++;
+            if (Grid.cellGrid.get((position +Game.GRIDSIZE)).getType() == 1) dangerCount ++;
+            if (Grid.cellGrid.get((position - 1)).getType() == 1) dangerCount ++;
+        } else {
+            if (Grid.cellGrid.get((position +Game.GRIDSIZE + 1)).getType() == 1) dangerCount ++;
+            if (Grid.cellGrid.get((position +Game.GRIDSIZE - 1)).getType() == 1) dangerCount ++;
+            if (Grid.cellGrid.get((position +Game.GRIDSIZE)).getType() == 1) dangerCount ++;
+            if (Grid.cellGrid.get((position + 1)).getType() == 1) dangerCount ++;
+            if (Grid.cellGrid.get((position - 1)).getType() == 1) dangerCount ++;
+        }
+        return dangerCount;
+    }
     public void rightClick(Cell cell) {
         if (!cell.isDiscovered()) {
             if (!cell.isFlagged()) {

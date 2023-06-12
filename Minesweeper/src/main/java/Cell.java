@@ -4,15 +4,15 @@ import java.awt.event.MouseListener;
 
 public class Cell extends JButton {
     //types: 0 = blank, 1 = Mine, 2= Number
-    private int type;
+    private CellType cellType;
     private int position;
     private boolean discovered;
     private boolean flagged;
 
     private Handler handler;
 
-    public Cell(int type, int position, boolean discovered, boolean flagged, Handler handler) {
-        this.type = type;
+    public Cell(CellType type, int position, boolean discovered, boolean flagged, Handler handler) {
+        this.cellType = type;
         this.position = position;
         this.discovered = discovered;
         this.flagged = flagged;
@@ -42,12 +42,12 @@ public class Cell extends JButton {
         });
     }
 
-    public int getType() {
-        return type;
+    public CellType getCellType() {
+        return cellType;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setCellType(CellType cellType) {
+        this.cellType = cellType;
     }
 
     public int getPosition() {

@@ -4,10 +4,6 @@ public class Handler {
     private ArrayList<Cell> current = new ArrayList<Cell>();
     private ArrayList<Cell> queue = new ArrayList<Cell>();
     private static int flaggedCells = 0;
-
-    public boolean isOnLeftColumn(int position) {
-        return position % Game.GRIDSIZE == 0;
-    }
     public void click(Cell cell) {
         int discoveredCells = 0;
         if (!cell.isFlagged()) {
@@ -16,7 +12,7 @@ public class Handler {
 
             int position = cell.getPosition();
 
-            if (cell.getType() == 0) {
+            if (cell.getCellType() == CellType.BLANK) {
                 //if cell is on first row
                 if(position < Game.GRIDSIZE) {
                     queueIfTopRow(position);
@@ -33,57 +29,28 @@ public class Handler {
                 } else {
                     queueIfNotOnEdge(position);
                 }
-            } else if (cell.getType() == 2) {
+            } else if (cell.getCellType() == CellType.NUMBER) {
                 int dangerCount = 0;
                 if (position < Game.GRIDSIZE) {
                     dangerCount = setDangerCountTopRow(position);
                 } else if (position >= (Game.GRIDSIZE *(Game.GRIDSIZE -1))) {
-                    if(position % Game.GRIDSIZE == 0) {
-                        if (Grid.cellGrid.get((position - Game.GRIDSIZE + 1)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position - Game.GRIDSIZE)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position + 1)).getType() == 1) dangerCount ++;
-                    } else if (position % Game.GRIDSIZE == Game.GRIDSIZE - 1) {
-                        if (Grid.cellGrid.get((position - Game.GRIDSIZE - 1)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position - Game.GRIDSIZE)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position - 1)).getType() == 1) dangerCount ++;
-                    } else {
-                        if (Grid.cellGrid.get((position - Game.GRIDSIZE + 1)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position - Game.GRIDSIZE - 1)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position - Game.GRIDSIZE)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position + 1)).getType() == 1) dangerCount ++;
-                        if (Grid.cellGrid.get((position - 1)).getType() == 1) dangerCount ++;
-                    }
+                    dangerCount = setDangerCounterBottomRow(position);
                 } else if (position % Game.GRIDSIZE == 0) {
-                    if (Grid.cellGrid.get((position - Game.GRIDSIZE + 1)).getType() == 1) dangerCount ++;
-                    if (Grid.cellGrid.get((position + Game.GRIDSIZE + 1)).getType() == 1) dangerCount ++;
-                    if (Grid.cellGrid.get((position - Game.GRIDSIZE)).getType() == 1) dangerCount ++;
-                    if (Grid.cellGrid.get((position + Game.GRIDSIZE)).getType() == 1) dangerCount ++;
-                    if (Grid.cellGrid.get((position + 1)).getType() == 1) dangerCount ++;
+                    dangerCount = setDangerCountLeftColumn(position);
                 } else if (position % Game.GRIDSIZE == Game.GRIDSIZE -1) {
-                    if (Grid.cellGrid.get((position - Game.GRIDSIZE - 1)).getType() == 1) dangerCount ++;
-                    if (Grid.cellGrid.get((position + Game.GRIDSIZE - 1)).getType() == 1) dangerCount ++;
-                    if (Grid.cellGrid.get((position - Game.GRIDSIZE)).getType() == 1) dangerCount ++;
-                    if (Grid.cellGrid.get((position + Game.GRIDSIZE)).getType() == 1) dangerCount ++;
-                    if (Grid.cellGrid.get((position - 1)).getType() == 1) dangerCount ++;
+                    dangerCount = setDangerCounterRightColumn(position);
                 } else {
-                    if (Grid.cellGrid.get((position - Game.GRIDSIZE)).getType() == 1) dangerCount ++;
-                    if (Grid.cellGrid.get((position - Game.GRIDSIZE + 1)).getType() == 1) dangerCount++;
-                    if (Grid.cellGrid.get((position + 1)).getType() == 1) dangerCount ++;
-                    if (Grid.cellGrid.get((position + Game.GRIDSIZE + 1)).getType() == 1) dangerCount ++;
-                    if (Grid.cellGrid.get((position + Game.GRIDSIZE)).getType() == 1) dangerCount ++;
-                    if (Grid.cellGrid.get((position + Game.GRIDSIZE - 1)).getType() == 1) dangerCount ++;
-                    if (Grid.cellGrid.get((position - 1)).getType() == 1) dangerCount ++;
-                    if (Grid.cellGrid.get((position - Game.GRIDSIZE - 1)).getType() == 1) dangerCount ++;
+                    dangerCount = setDangerCounterNotOnEdge(position);
                 }
                 cell.setText(String.valueOf(dangerCount));
-            } else if (cell.getType() == 1) {
+            } else if (cell.getCellType() == CellType.MINE) {
                 for (int x = 0; x < Grid.cellGrid.size(); x++) {
                     Grid.cellGrid.get(x).setEnabled(false);
                     Grid.cellGrid.get(x).setText("");
-                    if (Grid.cellGrid.get(x).getType() == 1 ) {
-                        Grid.cellGrid.get(x).setText("X");
+                    if (Grid.cellGrid.get(x).getCellType() == CellType.MINE ) {
+                        Grid.cellGrid.get(x).setText("\uD83D\uDCA3");
                     }
-                    cell.setText("*");
+                    cell.setText("\uD83D\uDCA3");
                 }
             }
 
@@ -106,12 +73,12 @@ public class Handler {
             }
             if (discoveredCells == Grid.cellGrid.size() - Game.MINECOUNT) {
                 for (int x = 0; x < Grid.cellGrid.size(); x ++) {
-                    if (Grid.cellGrid.get(x).getType() == 1) {
+                    if (Grid.cellGrid.get(x).getCellType() == CellType.MINE) {
                         Grid.cellGrid.get(x).setEnabled(false);
-                        Grid.cellGrid.get(x).setText("X");
+                        Grid.cellGrid.get(x).setText("\uD83D\uDCA3");
                     } else {
                         Grid.cellGrid.get(x).setEnabled(false);
-                        Grid.cellGrid.get(x).setText(":)");
+                        Grid.cellGrid.get(x).setText("\uD83E\uDD73");
                     }
                 }
             }
@@ -187,27 +154,76 @@ public class Handler {
     public int setDangerCountTopRow(int position) {
         int dangerCount = 0;
         if(position % Game.GRIDSIZE == 0) {
-            if (Grid.cellGrid.get((position +Game.GRIDSIZE + 1)).getType() == 1) dangerCount ++;
-            if (Grid.cellGrid.get((position +Game.GRIDSIZE)).getType() == 1) dangerCount ++;
-            if (Grid.cellGrid.get((position + 1)).getType() == 1) dangerCount ++;
+            if (Grid.cellGrid.get((position +Game.GRIDSIZE + 1)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position +Game.GRIDSIZE)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position + 1)).getCellType() == CellType.MINE) dangerCount ++;
         } else if (position % Game.GRIDSIZE == Game.GRIDSIZE - 1) {
-            if (Grid.cellGrid.get((position +Game.GRIDSIZE - 1)).getType() == 1) dangerCount ++;
-            if (Grid.cellGrid.get((position +Game.GRIDSIZE)).getType() == 1) dangerCount ++;
-            if (Grid.cellGrid.get((position - 1)).getType() == 1) dangerCount ++;
+            if (Grid.cellGrid.get((position +Game.GRIDSIZE - 1)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position +Game.GRIDSIZE)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position - 1)).getCellType() == CellType.MINE) dangerCount ++;
         } else {
-            if (Grid.cellGrid.get((position +Game.GRIDSIZE + 1)).getType() == 1) dangerCount ++;
-            if (Grid.cellGrid.get((position +Game.GRIDSIZE - 1)).getType() == 1) dangerCount ++;
-            if (Grid.cellGrid.get((position +Game.GRIDSIZE)).getType() == 1) dangerCount ++;
-            if (Grid.cellGrid.get((position + 1)).getType() == 1) dangerCount ++;
-            if (Grid.cellGrid.get((position - 1)).getType() == 1) dangerCount ++;
+            if (Grid.cellGrid.get((position +Game.GRIDSIZE + 1)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position +Game.GRIDSIZE - 1)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position +Game.GRIDSIZE)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position + 1)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position - 1)).getCellType() == CellType.MINE) dangerCount ++;
         }
+        return dangerCount;
+    }
+    public int setDangerCounterBottomRow (int position) {
+        int dangerCount = 0;
+        if(position % Game.GRIDSIZE == 0) {
+            if (Grid.cellGrid.get((position - Game.GRIDSIZE + 1)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position - Game.GRIDSIZE)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position + 1)).getCellType() == CellType.MINE) dangerCount ++;
+        } else if (position % Game.GRIDSIZE == Game.GRIDSIZE - 1) {
+            if (Grid.cellGrid.get((position - Game.GRIDSIZE - 1)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position - Game.GRIDSIZE)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position - 1)).getCellType() == CellType.MINE) dangerCount ++;
+        } else {
+            if (Grid.cellGrid.get((position - Game.GRIDSIZE + 1)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position - Game.GRIDSIZE - 1)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position - Game.GRIDSIZE)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position + 1)).getCellType() == CellType.MINE) dangerCount ++;
+            if (Grid.cellGrid.get((position - 1)).getCellType() == CellType.MINE) dangerCount ++;
+        }
+        return dangerCount;
+    }
+    public int setDangerCountLeftColumn(int position) {
+        int dangerCount = 0;
+        if (Grid.cellGrid.get((position - Game.GRIDSIZE + 1)).getCellType() == CellType.MINE) dangerCount ++;
+        if (Grid.cellGrid.get((position + Game.GRIDSIZE + 1)).getCellType() == CellType.MINE) dangerCount ++;
+        if (Grid.cellGrid.get((position - Game.GRIDSIZE)).getCellType() == CellType.MINE) dangerCount ++;
+        if (Grid.cellGrid.get((position + Game.GRIDSIZE)).getCellType() == CellType.MINE) dangerCount ++;
+        if (Grid.cellGrid.get((position + 1)).getCellType() == CellType.MINE) dangerCount ++;
+        return dangerCount;
+    }
+    public int setDangerCounterRightColumn(int position) {
+        int dangerCount = 0;
+        if (Grid.cellGrid.get((position - Game.GRIDSIZE - 1)).getCellType() == CellType.MINE) dangerCount ++;
+        if (Grid.cellGrid.get((position + Game.GRIDSIZE - 1)).getCellType() == CellType.MINE) dangerCount ++;
+        if (Grid.cellGrid.get((position - Game.GRIDSIZE)).getCellType() == CellType.MINE) dangerCount ++;
+        if (Grid.cellGrid.get((position + Game.GRIDSIZE)).getCellType() == CellType.MINE) dangerCount ++;
+        if (Grid.cellGrid.get((position - 1)).getCellType() == CellType.MINE) dangerCount ++;
+        return dangerCount;
+    }
+    public int setDangerCounterNotOnEdge(int position) {
+        int dangerCount = 0;
+        if (Grid.cellGrid.get((position - Game.GRIDSIZE)).getCellType() == CellType.MINE) dangerCount ++;
+        if (Grid.cellGrid.get((position - Game.GRIDSIZE + 1)).getCellType() == CellType.MINE) dangerCount++;
+        if (Grid.cellGrid.get((position + 1)).getCellType() == CellType.MINE) dangerCount ++;
+        if (Grid.cellGrid.get((position + Game.GRIDSIZE + 1)).getCellType() == CellType.MINE) dangerCount ++;
+        if (Grid.cellGrid.get((position + Game.GRIDSIZE)).getCellType() == CellType.MINE) dangerCount ++;
+        if (Grid.cellGrid.get((position + Game.GRIDSIZE - 1)).getCellType() == CellType.MINE) dangerCount ++;
+        if (Grid.cellGrid.get((position - 1)).getCellType() == CellType.MINE) dangerCount ++;
+        if (Grid.cellGrid.get((position - Game.GRIDSIZE - 1)).getCellType() == CellType.MINE) dangerCount ++;
         return dangerCount;
     }
     public void rightClick(Cell cell) {
         if (!cell.isDiscovered()) {
             if (!cell.isFlagged()) {
                 cell.setFlagged(true);
-                cell.setText("F");
+                cell.setText("⚑");
                 flaggedCells++;
                 Window.update(flaggedCells);
             } else {

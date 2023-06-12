@@ -6,7 +6,7 @@ public class Game {
 
     private Handler handler =  new Handler();
 
-    private Window window = new Window(WIDTH, Height, GRIDSIZE, "Minesweeper", Game.this, handler);
+    private Window window = new Window(WIDTH, Height, GRIDSIZE, "Minesweeper", handler);
 
     public Handler getHandler() {
         return handler;

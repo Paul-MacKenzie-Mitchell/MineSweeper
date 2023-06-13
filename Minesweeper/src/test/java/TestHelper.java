@@ -8,12 +8,12 @@ public class TestHelper {
 
         public static Game makeGame() {
             Game game = new Game();
+            Window window = game.getWindow();
             return game;
         }
 
         public static Window makeWindow() {
-            Game game = new Game();
-            Window window = game.getWindow();
+            Window window = new Window(WIDTH, HEIGHT, GRIDSIZE, "Minesweeper", handler);
             return window;
         }
 

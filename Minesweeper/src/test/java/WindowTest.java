@@ -1,24 +1,45 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class WindowTest {
+
+    Window window;
+    Game game;
+
+    @BeforeEach
+    public void setup() {
+        game = Mockito.mock(Game.class);
+        Window window = TestHelper.makeWindow();
+        when(game.getWindow())
+                .thenReturn(window);
+    }
     @Test
     void windowNotNull() {
-        Window validWindow = TestHelper.makeWindow();
-        assertNotNull(validWindow);
+        assertNotNull(game.getWindow());
     }
     @Test
     void createsValidWindowHeight() {
-        Window validWindow = TestHelper.makeWindow();
-        assertTrue(validWindow.getHeight() == 720);
-        assertTrue(validWindow.getHeight() != 1000);
+        assertTrue(game.getWindow().getHeight() == 720);
     }
     @Test
+    void doesNotCreateInvalidWindowHeight() {
+        assertTrue(game.getWindow().getHeight() < 721);
+        assertTrue(game.getWindow().getHeight() > 719);
+    }
+
+    @Test
     void createsValidWindowWidth() {
-        Window validWindow = TestHelper.makeWindow();
-        assertTrue(validWindow.getWidth() == 720);
-        assertTrue(validWindow.getWidth() != 1000);
+        assertTrue(game.getWindow().getWidth() == 720);
+    }
+    @Test
+    void doesNotCreateInvalidWindowWidth() {
+        assertTrue(game.getWindow().getWidth() < 721);
+        assertTrue(game.getWindow().getHeight() > 719);
     }
     @Test
     void createsWindowWithCorrectTitle() {

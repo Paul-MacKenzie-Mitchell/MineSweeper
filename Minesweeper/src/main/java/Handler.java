@@ -2,8 +2,25 @@ import java.util.ArrayList;
 
 public class Handler {
     private ArrayList<Cell> current = new ArrayList<Cell>();
+
     private ArrayList<Cell> queue = new ArrayList<Cell>();
     private static int flaggedCells = 0;
+
+    public static int getFlaggedCells() {
+        return flaggedCells;
+    }
+
+    public static void setFlaggedCells(int flaggedCells) {
+        Handler.flaggedCells = flaggedCells;
+    }
+    public ArrayList<Cell> getCurrent() {
+        return current;
+    }
+
+    public ArrayList<Cell> getQueue() {
+        return queue;
+    }
+
     public void click(Cell cell) {
         int discoveredCells = 0;
         if (!cell.isFlagged()) {
@@ -13,45 +30,11 @@ public class Handler {
             int position = cell.getPosition();
 
             if (cell.getCellType() == CellType.BLANK) {
-                //if cell is on first row
-                if(position < Game.GRIDSIZE) {
-                    queueIfTopRow(position);
-//                    //if the cell is in the bottom row
-                } else if (position >= (Game.GRIDSIZE * (Game.GRIDSIZE -1))) {
-                    queueIfBottomRow(position);
-                //if cells on left most column
-                } else if (position % Game.GRIDSIZE == 0) {
-                    queueIfLeftColumn(position);
-                //if cells on right most column
-                } else if (position % Game.GRIDSIZE == Game.GRIDSIZE - 1) {
-                    queueIfRightColumn(position);
-                //if cell is not on edge of grid
-                } else {
-                    queueIfNotOnEdge(position);
-                }
+               handleBlankCell(position);
             } else if (cell.getCellType() == CellType.NUMBER) {
-                int dangerCount = 0;
-                if (position < Game.GRIDSIZE) {
-                    dangerCount = setDangerCountTopRow(position);
-                } else if (position >= (Game.GRIDSIZE *(Game.GRIDSIZE -1))) {
-                    dangerCount = setDangerCounterBottomRow(position);
-                } else if (position % Game.GRIDSIZE == 0) {
-                    dangerCount = setDangerCountLeftColumn(position);
-                } else if (position % Game.GRIDSIZE == Game.GRIDSIZE -1) {
-                    dangerCount = setDangerCounterRightColumn(position);
-                } else {
-                    dangerCount = setDangerCounterNotOnEdge(position);
-                }
-                cell.setText(String.valueOf(dangerCount));
+                handleNumberCell(position, cell);
             } else if (cell.getCellType() == CellType.MINE) {
-                for (int x = 0; x < Grid.cellGrid.size(); x++) {
-                    Grid.cellGrid.get(x).setEnabled(false);
-                    Grid.cellGrid.get(x).setText("");
-                    if (Grid.cellGrid.get(x).getCellType() == CellType.MINE ) {
-                        Grid.cellGrid.get(x).setText("\uD83D\uDCA3");
-                    }
-                    cell.setText("\uD83D\uDCA3");
-                }
+                handleMineCell(position, cell);
             }
 
             for(int x = 0; x < queue.size(); x++) {
@@ -82,6 +65,52 @@ public class Handler {
                     }
                 }
             }
+        }
+    }
+
+    public void handleMineCell(int position, Cell cell) {
+        for (int x = 0; x < Grid.cellGrid.size(); x++) {
+            Grid.cellGrid.get(x).setEnabled(false);
+            Grid.cellGrid.get(x).setText("");
+            if (Grid.cellGrid.get(x).getCellType() == CellType.MINE ) {
+                Grid.cellGrid.get(x).setText("\uD83D\uDCA3");
+            }
+            cell.setText("\uD83D\uDCA3");
+        }
+    }
+
+    public void handleNumberCell(int position, Cell cell) {
+        int dangerCount = 0;
+        if (position < Game.GRIDSIZE) {
+            dangerCount = setDangerCountTopRow(position);
+        } else if (position >= (Game.GRIDSIZE *(Game.GRIDSIZE -1))) {
+            dangerCount = setDangerCounterBottomRow(position);
+        } else if (position % Game.GRIDSIZE == 0) {
+            dangerCount = setDangerCountLeftColumn(position);
+        } else if (position % Game.GRIDSIZE == Game.GRIDSIZE -1) {
+            dangerCount = setDangerCounterRightColumn(position);
+        } else {
+            dangerCount = setDangerCounterNotOnEdge(position);
+        }
+        cell.setText(String.valueOf(dangerCount));
+    }
+
+    public void handleBlankCell(int position) {
+        //if cell is on first row
+        if(position < Game.GRIDSIZE) {
+            queueIfTopRow(position);
+//                    //if the cell is in the bottom row
+        } else if (position >= (Game.GRIDSIZE * (Game.GRIDSIZE -1))) {
+            queueIfBottomRow(position);
+            //if cells on left most column
+        } else if (position % Game.GRIDSIZE == 0) {
+            queueIfLeftColumn(position);
+            //if cells on right most column
+        } else if (position % Game.GRIDSIZE == Game.GRIDSIZE - 1) {
+            queueIfRightColumn(position);
+            //if cell is not on edge of grid
+        } else {
+            queueIfNotOnEdge(position);
         }
     }
 

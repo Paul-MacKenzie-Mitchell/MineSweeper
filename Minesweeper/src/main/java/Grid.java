@@ -4,12 +4,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Grid extends JPanel {
+    public int getBound() {
+        return bound;
+    }
+
+    public void setBound(int bound) {
+        this.bound = bound;
+    }
+
     //Total number of cells
     private int bound = Game.GRIDSIZE * Game.GRIDSIZE;
     //used to determine if a cell has already been chosen as a mine
     private boolean picked = false;
+
+
     //position of mines in grid
     private ArrayList<Integer> mines = new ArrayList<Integer>();
+
+
     public static ArrayList<Cell> cellGrid = new ArrayList<Cell>();
 
     public Grid(GridLayout g, Handler handler) {
@@ -17,8 +29,22 @@ public class Grid extends JPanel {
         createCells(handler);
         addCells();
     }
+    public ArrayList<Integer> getMines() {
+        return mines;
+    }
 
-    private void createCells(Handler handler) {
+    public void setMines(ArrayList<Integer> mines) {
+        this.mines = mines;
+    }
+    public static ArrayList<Cell> getCellGrid() {
+        return cellGrid;
+    }
+
+    public static void setCellGrid(ArrayList<Cell> cellGrid) {
+        Grid.cellGrid = cellGrid;
+    }
+
+    public void createCells(Handler handler) {
         createMineLocations();
         // Creates types of cells for each of the positions in the grid
         for (int i = 0; i < bound; i++) {

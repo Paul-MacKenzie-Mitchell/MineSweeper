@@ -8,6 +8,8 @@ public class Game {
 
     private Window window = new Window(WIDTH, Height, GRIDSIZE, "Minesweeper", handler);
 
+    //getters and setters
+
     public Handler getHandler() {
         return handler;
     }

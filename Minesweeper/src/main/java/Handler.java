@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Handler {
     private ArrayList<Cell> current = new ArrayList<Cell>();
@@ -28,47 +29,27 @@ public class Handler {
                 cell.setDiscovered(true);
 
             int position = cell.getPosition();
-
+            //Determine Action Taken
             if (cell.getCellType() == CellType.BLANK) {
                handleBlankCell(position);
             } else if (cell.getCellType() == CellType.NUMBER) {
                 handleNumberCell(position, cell);
             } else if (cell.getCellType() == CellType.MINE) {
-                handleMineCell(position, cell);
+                handleMineCell(cell);
             }
 
-            for(int x = 0; x < queue.size(); x++) {
-                if(!queue.get(x).isDiscovered()) {
-                    current.add(queue.get(x));
-                    queue.get(x).setDiscovered(true);
-                }
-            }
-            queue.clear();
-            while (!current.isEmpty()) {
-                Cell temp = current.get(0);
-                current.remove(0);
-                temp.clickButton();
-            }
-            for (int x = 0; x < Grid.cellGrid.size(); x++) {
-                if(Grid.cellGrid.get(x).isDiscovered()) {
-                    discoveredCells++;
-                }
-            }
-            if (discoveredCells == Grid.cellGrid.size() - Game.MINECOUNT) {
-                for (int x = 0; x < Grid.cellGrid.size(); x ++) {
-                    if (Grid.cellGrid.get(x).getCellType() == CellType.MINE) {
-                        Grid.cellGrid.get(x).setEnabled(false);
-                        Grid.cellGrid.get(x).setText("\uD83D\uDCA3");
-                    } else {
-                        Grid.cellGrid.get(x).setEnabled(false);
-                        Grid.cellGrid.get(x).setText("\uD83E\uDD73");
-                    }
-                }
-            }
+            addToCurrentList(queue, current);
+
+            revealCells(current);
+
+            discoveredCells = determineDiscoveredCells(discoveredCells);
+
+            winConditionsMet(discoveredCells);
         }
     }
 
-    public void handleMineCell(int position, Cell cell) {
+
+    public void handleMineCell(Cell cell) {
         for (int x = 0; x < Grid.cellGrid.size(); x++) {
             Grid.cellGrid.get(x).setEnabled(false);
             Grid.cellGrid.get(x).setText("");
@@ -247,6 +228,43 @@ public class Handler {
         if (Grid.cellGrid.get((position - 1)).getCellType() == CellType.MINE) dangerCount ++;
         if (Grid.cellGrid.get((position - Game.GRIDSIZE - 1)).getCellType() == CellType.MINE) dangerCount ++;
         return dangerCount;
+    }
+    public static void addToCurrentList(ArrayList<Cell> queue, ArrayList<Cell> current) {
+        for(int x = 0; x < queue.size(); x++) {
+            if(!queue.get(x).isDiscovered()) {
+                current.add(queue.get(x));
+                queue.get(x).setDiscovered(true);
+            }
+        }
+        queue.clear();
+    }
+    public static void revealCells(ArrayList<Cell> current) {
+        while (!current.isEmpty()) {
+            Cell temp = current.get(0);
+            current.remove(0);
+            temp.clickButton();
+        }
+    }
+    public static int determineDiscoveredCells(int discoveredCells) {
+        for (int x = 0; x < Grid.cellGrid.size(); x++) {
+            if(Grid.cellGrid.get(x).isDiscovered()) {
+                discoveredCells++;
+            }
+        }
+        return discoveredCells;
+    }
+    public static void winConditionsMet(int discoveredCells) {
+        if (discoveredCells == Grid.cellGrid.size() - Game.MINECOUNT) {
+            for (int x = 0; x < Grid.cellGrid.size(); x ++) {
+                if (Grid.cellGrid.get(x).getCellType() == CellType.MINE) {
+                    Grid.cellGrid.get(x).setEnabled(false);
+                    Grid.cellGrid.get(x).setText("\uD83D\uDCA3");
+                } else {
+                    Grid.cellGrid.get(x).setEnabled(false);
+                    Grid.cellGrid.get(x).setText("\uD83E\uDD73");
+                }
+            }
+        }
     }
     public void rightClick(Cell cell) {
         if (!cell.isDiscovered()) {

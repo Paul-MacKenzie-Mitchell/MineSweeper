@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Handler {
+
     private ArrayList<Cell> current = new ArrayList<Cell>();
 
     private ArrayList<Cell> queue = new ArrayList<Cell>();
@@ -11,9 +12,6 @@ public class Handler {
         return flaggedCells;
     }
 
-    public static void setFlaggedCells(int flaggedCells) {
-        Handler.flaggedCells = flaggedCells;
-    }
     public ArrayList<Cell> getCurrent() {
         return current;
     }
@@ -265,6 +263,7 @@ public class Handler {
                 }
             }
         }
+
     }
     public void rightClick(Cell cell) {
         if (!cell.isDiscovered()) {

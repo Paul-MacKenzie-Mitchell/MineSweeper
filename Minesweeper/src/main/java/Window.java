@@ -9,36 +9,23 @@ public class Window {
 
     //Getters and Setters
 
-    public JFrame getFrame() {
-        return frame;
-    }
-    public void setFrame(JFrame frame) {
-        Window.frame = frame;
-    }
     public String getTitle() {
         return title;
-    }
-    public void setTitle(String title) {
-        Window.title = title;
     }
 
     public int getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
-        Window.width = width;
-    }
 
     public int getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
-        Window.height = height;
+    public JFrame getFrame() {
+        return frame;
     }
-
-    //Constructor
+//Constructor
 
     public Window(int width, int height, int gridSize, String title, Handler handler) {
         Window.width = width;
@@ -63,7 +50,15 @@ public class Window {
         frame.pack();
         frame.setVisible(true);
     }
+    public void resetJPanel(int gridSize, Handler handler) {
+        JPanel panel = new Grid(new GridLayout(gridSize, gridSize), handler);
 
+        frame.setContentPane(panel);
+        //initiates with 0 flags posted
+        update(0);
+        frame.pack();
+        frame.setVisible(true);
+    }
     //Method Updates the number of flags that have been posted on the board
 
     public static void update(int flagged) {

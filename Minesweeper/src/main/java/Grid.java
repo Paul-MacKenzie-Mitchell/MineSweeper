@@ -33,16 +33,10 @@ public class Grid extends JPanel {
         return mines;
     }
 
-    public void setMines(ArrayList<Integer> mines) {
-        this.mines = mines;
-    }
     public static ArrayList<Cell> getCellGrid() {
         return cellGrid;
     }
 
-    public static void setCellGrid(ArrayList<Cell> cellGrid) {
-        Grid.cellGrid = cellGrid;
-    }
 
     public void createCells(Handler handler) {
         createMineLocations();

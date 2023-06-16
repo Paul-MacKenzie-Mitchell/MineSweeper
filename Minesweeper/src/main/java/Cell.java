@@ -46,16 +46,8 @@ public class Cell extends JButton {
         return cellType;
     }
 
-    public void setCellType(CellType cellType) {
-        this.cellType = cellType;
-    }
-
     public int getPosition() {
         return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
     }
 
     public boolean isDiscovered() {

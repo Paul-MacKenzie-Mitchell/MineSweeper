@@ -27,16 +27,13 @@ class HandlerTest {
     }
     @AfterEach
     void reset() {
+        handler.setFlaggedCells(0);
         mockGrid.cellGrid.clear();
     }
     @Test
     void clickedUnFlaggedCellShouldBecomeDiscovered() {
         Cell mineTopLeft = new Cell(CellType.MINE, 0, false,false, handler);
         handler.click(mineTopLeft);
-        for (int x = 0; x < mockGrid.getCellGrid().size(); x++) {
-            Cell tempCell = mockGrid.cellGrid.get(x);
-            System.out.println(tempCell.getCellType() + " " + tempCell.getPosition());
-        }
         assertTrue(mineTopLeft.isDiscovered() == true);
     }
     @Test
@@ -93,7 +90,7 @@ class HandlerTest {
         assertEquals(3, handler.getQueue().size());
     }
     @Test
-    void ifBlankCellTopRightShouldAdd3ToQueue() {
+     void ifBlankCellTopRightShouldAdd3ToQueue() {
         Cell blankTopRight = new Cell(CellType.BLANK, Game.GRIDSIZE - 1, false,false, handler);
         handler.handleBlankCell(blankTopRight.getPosition());
         assertEquals(3, handler.getQueue().size());
@@ -149,6 +146,26 @@ class HandlerTest {
                 .thenReturn(queueMock);
         Handler.addToCurrentList(queueMock, current);
         assertTrue(current.size() == 0);
+    }
+    @Test
+    void getCurrentWhenEmptyShouldBeEmpty() {
+        ArrayList<Cell> current = handler.getCurrent();
+        int numCellsInCurrent = current.size();
+        assertTrue( numCellsInCurrent == 0 );
+    }
+    @Test
+    void getCurrentShouldReturnLisContaining1CellIContains1Cell() {
+        Handler handlerMock = Mockito.mock(Handler.class);
+        ArrayList<Cell> current = handler.getCurrent();
+        ArrayList<Cell> queue = handler.getQueue();
+        Cell blankRightColumn =  new Cell(CellType.BLANK, Game.GRIDSIZE * 3 - 1, false, false, handler);
+        queue.add(blankRightColumn);
+        when(handlerMock.getQueue())
+                .thenReturn(queue);
+        Handler.addToCurrentList(queue, current);
+        current = handler.getCurrent();
+        int numCellsInCurrent = current.size();
+        assertTrue( numCellsInCurrent == 1 );
     }
     @Test
     void shouldAddNumberOfCellsInQueueToCurrent() {
@@ -208,28 +225,153 @@ class HandlerTest {
         assertTrue(blankRightColumn.isEnabled() == false);
     }
     @Test
-    void numberCellInTopLeftCornerSurroundedShouldReturn3() {
+    void numberCellInTopLeftCornerSurroundedShouldReturnDangerCount3() {
         Cell numberTopLeftCorner = new Cell(CellType.NUMBER, 0, false, false, handler);
         Grid.cellGrid.set(numberTopLeftCorner.getPosition() + 1, new Cell(CellType.MINE, numberTopLeftCorner.getPosition() + 1, false, false, handler));
         Grid.cellGrid.set(numberTopLeftCorner.getPosition() + Game.GRIDSIZE, new Cell(CellType.MINE, numberTopLeftCorner.getPosition() + Game.GRIDSIZE, false, false, handler));
         Grid.cellGrid.set(numberTopLeftCorner.getPosition() + Game.GRIDSIZE + 1, new Cell(CellType.MINE, numberTopLeftCorner.getPosition() + Game.GRIDSIZE + 1, false, false, handler));
-        int dangerCount = handler.setDangerCountTopRow(numberTopLeftCorner.getPosition());
-        System.out.println(dangerCount);
+        assertEquals(3, handler.setDangerCountTopRow(numberTopLeftCorner.getPosition()));
     }
     @Test
-    void shouldNotWinIfConditionsNotMet() {
+    void numberCellInTopRightCornerSurroundedShouldReturnDangerCount3() {
+        Cell numberTopRightCorner = new Cell(CellType.NUMBER, Game.GRIDSIZE - 1, false, false, handler);
+        Grid.cellGrid.set(numberTopRightCorner.getPosition() - 1, new Cell(CellType.MINE, numberTopRightCorner.getPosition() - 1, false, false, handler));
+        Grid.cellGrid.set(numberTopRightCorner.getPosition() + Game.GRIDSIZE, new Cell(CellType.MINE, numberTopRightCorner.getPosition() + Game.GRIDSIZE, false, false, handler));
+        Grid.cellGrid.set(numberTopRightCorner.getPosition() + Game.GRIDSIZE - 1, new Cell(CellType.MINE, numberTopRightCorner.getPosition() + Game.GRIDSIZE - 1, false, false, handler));
+        assertEquals(3, handler.setDangerCountTopRow(numberTopRightCorner.getPosition()));
+    }
+    @Test
+    void numberCellOnTopRowMiddleSurroundedShouldReturnDangerCount5() {
+        Cell numberTopRowMiddle = new Cell(CellType.NUMBER, Game.GRIDSIZE - (Game.GRIDSIZE / 2), false, false, handler);
+        Grid.cellGrid.set(numberTopRowMiddle.getPosition() - 1, new Cell(CellType.MINE, numberTopRowMiddle.getPosition() - 1, false, false, handler));
+        Grid.cellGrid.set(numberTopRowMiddle.getPosition() + 1, new Cell(CellType.MINE, numberTopRowMiddle.getPosition() + 1, false, false, handler));
+        Grid.cellGrid.set(numberTopRowMiddle.getPosition() + Game.GRIDSIZE, new Cell(CellType.MINE, numberTopRowMiddle.getPosition() + Game.GRIDSIZE, false, false, handler));
+        Grid.cellGrid.set(numberTopRowMiddle.getPosition() + Game.GRIDSIZE - 1, new Cell(CellType.MINE, numberTopRowMiddle.getPosition() + Game.GRIDSIZE - 1, false, false, handler));
+        Grid.cellGrid.set(numberTopRowMiddle.getPosition() + Game.GRIDSIZE + 1, new Cell(CellType.MINE, numberTopRowMiddle.getPosition() + Game.GRIDSIZE + 1, false, false, handler));
+        assertEquals(5, handler.setDangerCountTopRow(numberTopRowMiddle.getPosition()));
+    }
+    @Test
+    void numberCellInBottomLeftCornerSurroundedShouldReturnDangerCount3() {
+        Cell numberBottomLeftCorner = new Cell(CellType.NUMBER, Game.GRIDSIZE *(Game.GRIDSIZE -1), false, false, handler);
+        Grid.cellGrid.set(numberBottomLeftCorner.getPosition() + 1, new Cell(CellType.MINE, numberBottomLeftCorner.getPosition() + 1, false, false, handler));
+        Grid.cellGrid.set(numberBottomLeftCorner.getPosition() - Game.GRIDSIZE, new Cell(CellType.MINE, numberBottomLeftCorner.getPosition() - Game.GRIDSIZE, false, false, handler));
+        Grid.cellGrid.set(numberBottomLeftCorner.getPosition() - Game.GRIDSIZE + 1, new Cell(CellType.MINE, numberBottomLeftCorner.getPosition() - Game.GRIDSIZE + 1, false, false, handler));
+        assertEquals(3, handler.setDangerCounterBottomRow(numberBottomLeftCorner.getPosition()));
+    }
+    @Test
+    void numberCellInBottomRightCornerSurroundedShouldReturnDangerCount3() {
+        Cell numberBottomRightCorner = new Cell(CellType.NUMBER, Game.GRIDSIZE *Game.GRIDSIZE - 1, false, false, handler);
+        Grid.cellGrid.set(numberBottomRightCorner.getPosition() - 1, new Cell(CellType.MINE, numberBottomRightCorner.getPosition() - 1, false, false, handler));
+        Grid.cellGrid.set(numberBottomRightCorner.getPosition() - Game.GRIDSIZE, new Cell(CellType.MINE, numberBottomRightCorner.getPosition() - Game.GRIDSIZE, false, false, handler));
+        Grid.cellGrid.set(numberBottomRightCorner.getPosition() - Game.GRIDSIZE - 1, new Cell(CellType.MINE, numberBottomRightCorner.getPosition() - Game.GRIDSIZE - 1, false, false, handler));
+        assertEquals(3, handler.setDangerCounterBottomRow(numberBottomRightCorner.getPosition()));
+    }
+    @Test
+    void numberCellInBottomMiddleSurroundedShouldReturnDangerCount5() {
+        Cell numberBottomMiddle = new Cell(CellType.NUMBER, Game.GRIDSIZE * Game.GRIDSIZE - Game.GRIDSIZE / 2, false, false, handler);
+        Grid.cellGrid.set(numberBottomMiddle.getPosition() - 1, new Cell(CellType.MINE, numberBottomMiddle.getPosition() - 1, false, false, handler));
+        Grid.cellGrid.set(numberBottomMiddle.getPosition() + 1, new Cell(CellType.MINE, numberBottomMiddle.getPosition() + 1, false, false, handler));
+        Grid.cellGrid.set(numberBottomMiddle.getPosition() - Game.GRIDSIZE, new Cell(CellType.MINE, numberBottomMiddle.getPosition() - Game.GRIDSIZE, false, false, handler));
+        Grid.cellGrid.set(numberBottomMiddle.getPosition() - Game.GRIDSIZE - 1, new Cell(CellType.MINE, numberBottomMiddle.getPosition() - Game.GRIDSIZE - 1, false, false, handler));
+        Grid.cellGrid.set(numberBottomMiddle.getPosition() - Game.GRIDSIZE + 1, new Cell(CellType.MINE, numberBottomMiddle.getPosition() - Game.GRIDSIZE + 1, false, false, handler));
+        assertEquals(5, handler.setDangerCounterBottomRow(numberBottomMiddle.getPosition()));
+    }
+    @Test
+    void numberCellInLeftColumnShouldReturnDangerCount5() {
+        Cell numberLeftColumn = new Cell(CellType.NUMBER, Game.GRIDSIZE + Game.GRIDSIZE, false, false, handler);
+        Grid.cellGrid.set(numberLeftColumn.getPosition() + 1, new Cell(CellType.MINE, numberLeftColumn.getPosition() + 1, false, false, handler));
+        Grid.cellGrid.set(numberLeftColumn.getPosition() - Game.GRIDSIZE, new Cell(CellType.MINE, numberLeftColumn.getPosition() - Game.GRIDSIZE, false, false, handler));
+        Grid.cellGrid.set(numberLeftColumn.getPosition() - Game.GRIDSIZE + 1, new Cell(CellType.MINE, numberLeftColumn.getPosition() - Game.GRIDSIZE + 1, false, false, handler));
+        Grid.cellGrid.set(numberLeftColumn.getPosition() + Game.GRIDSIZE, new Cell(CellType.MINE, numberLeftColumn.getPosition() + Game.GRIDSIZE, false, false, handler));
+        Grid.cellGrid.set(numberLeftColumn.getPosition() + Game.GRIDSIZE + 1, new Cell(CellType.MINE, numberLeftColumn.getPosition() + Game.GRIDSIZE + 1, false, false, handler));
+        assertEquals(5, handler.setDangerCountLeftColumn(numberLeftColumn.getPosition()));
+    }
+    @Test
+    void numberCellInRightColumnShouldReturnDangerCount5() {
+        Cell numberRightColumn = new Cell(CellType.NUMBER, (Game.GRIDSIZE + Game.GRIDSIZE * 2) - 1, false, false, handler);
+        Grid.cellGrid.set(numberRightColumn.getPosition() - 1, new Cell(CellType.MINE, numberRightColumn.getPosition() - 1, false, false, handler));
+        Grid.cellGrid.set(numberRightColumn.getPosition() - Game.GRIDSIZE, new Cell(CellType.MINE, numberRightColumn.getPosition() - Game.GRIDSIZE, false, false, handler));
+        Grid.cellGrid.set(numberRightColumn.getPosition() - Game.GRIDSIZE - 1, new Cell(CellType.MINE, numberRightColumn.getPosition() - Game.GRIDSIZE - 1, false, false, handler));
+        Grid.cellGrid.set(numberRightColumn.getPosition() + Game.GRIDSIZE, new Cell(CellType.MINE, numberRightColumn.getPosition() + Game.GRIDSIZE, false, false, handler));
+        Grid.cellGrid.set(numberRightColumn.getPosition() + Game.GRIDSIZE - 1, new Cell(CellType.MINE, numberRightColumn.getPosition() + Game.GRIDSIZE - 1, false, false, handler));
+        assertEquals(5, handler.setDangerCounterRightColumn(numberRightColumn.getPosition()));
+    }
+    @Test
+    void numberCellNotOnEdgeShouldReturnDangerCount8() {
+        Cell numberCenter = new Cell(CellType.NUMBER, Game.GRIDSIZE + (Game.GRIDSIZE / 2), false, false, handler);
+        Grid.cellGrid.set(numberCenter.getPosition() - 1, new Cell(CellType.MINE, numberCenter.getPosition() - 1, false, false, handler));
+        Grid.cellGrid.set(numberCenter.getPosition() + 1, new Cell(CellType.MINE, numberCenter.getPosition() + 1, false, false, handler));
+        Grid.cellGrid.set(numberCenter.getPosition() - Game.GRIDSIZE, new Cell(CellType.MINE, numberCenter.getPosition() - Game.GRIDSIZE, false, false, handler));
+        Grid.cellGrid.set(numberCenter.getPosition() + Game.GRIDSIZE, new Cell(CellType.MINE, numberCenter.getPosition() + Game.GRIDSIZE, false, false, handler));
+        Grid.cellGrid.set(numberCenter.getPosition() - Game.GRIDSIZE - 1, new Cell(CellType.MINE, numberCenter.getPosition() - Game.GRIDSIZE - 1, false, false, handler));
+        Grid.cellGrid.set(numberCenter.getPosition() - Game.GRIDSIZE + 1, new Cell(CellType.MINE, numberCenter.getPosition() - Game.GRIDSIZE + 1, false, false, handler));
+        Grid.cellGrid.set(numberCenter.getPosition() + Game.GRIDSIZE - 1, new Cell(CellType.MINE, numberCenter.getPosition() + Game.GRIDSIZE - 1, false, false, handler));
+        Grid.cellGrid.set(numberCenter.getPosition() + Game.GRIDSIZE + 1, new Cell(CellType.MINE, numberCenter.getPosition() + Game.GRIDSIZE + 1, false, false, handler));
+        assertEquals(8, handler.setDangerCounterNotOnEdge(numberCenter.getPosition()));
+    }
+    @Test
+    void numberCellNotOnEdgeShouldHaveText8() {
+        Cell numberCenter = new Cell(CellType.NUMBER, Game.GRIDSIZE + (Game.GRIDSIZE / 2), false, false, handler);
+        Grid.cellGrid.set(numberCenter.getPosition() - 1, new Cell(CellType.MINE, numberCenter.getPosition() - 1, false, false, handler));
+        Grid.cellGrid.set(numberCenter.getPosition() + 1, new Cell(CellType.MINE, numberCenter.getPosition() + 1, false, false, handler));
+        Grid.cellGrid.set(numberCenter.getPosition() - Game.GRIDSIZE, new Cell(CellType.MINE, numberCenter.getPosition() - Game.GRIDSIZE, false, false, handler));
+        Grid.cellGrid.set(numberCenter.getPosition() + Game.GRIDSIZE, new Cell(CellType.MINE, numberCenter.getPosition() + Game.GRIDSIZE, false, false, handler));
+        Grid.cellGrid.set(numberCenter.getPosition() - Game.GRIDSIZE - 1, new Cell(CellType.MINE, numberCenter.getPosition() - Game.GRIDSIZE - 1, false, false, handler));
+        Grid.cellGrid.set(numberCenter.getPosition() - Game.GRIDSIZE + 1, new Cell(CellType.MINE, numberCenter.getPosition() - Game.GRIDSIZE + 1, false, false, handler));
+        Grid.cellGrid.set(numberCenter.getPosition() + Game.GRIDSIZE - 1, new Cell(CellType.MINE, numberCenter.getPosition() + Game.GRIDSIZE - 1, false, false, handler));
+        Grid.cellGrid.set(numberCenter.getPosition() + Game.GRIDSIZE + 1, new Cell(CellType.MINE, numberCenter.getPosition() + Game.GRIDSIZE + 1, false, false, handler));
+        handler.handleNumberCell(Game.GRIDSIZE + (Game.GRIDSIZE / 2), numberCenter);
+        assertEquals("8", numberCenter.getText());
+    }
+    @Test
+    void ifClickMineCellAllCellsNoCellsEnabled() {
+        Cell mineCenter = new Cell(CellType.MINE, Game.GRIDSIZE + (Game.GRIDSIZE / 2), false, false, handler);
+        handler.handleMineCell(mineCenter);
         int cells = (int) mockGrid.cellGrid.stream()
                 .filter(x -> x.isEnabled() == false)
                 .count();
+        assertTrue(cells == mockGrid.getBound());
+    }
+    @Test
+    void shouldNotWinIfConditionsNotMet() {
+        int discoveredCells = 0;
+        Handler.winConditionsMet(discoveredCells);
+        int cells = (int) mockGrid.cellGrid.stream()
+                .filter(x -> x.isEnabled() == false)
+                .count();
+
        assertTrue(cells == 0);
     }
     @Test
-    void shouldWinIfConditionsNotMet() {
+    void shouldWinIfConditionsMet() {
         int discoveredCells = 90;
         Handler.winConditionsMet(discoveredCells);
         int cellCounter = (int) mockGrid.cellGrid.stream()
                 .filter(x -> x.isEnabled() == false)
                 .count();
         assertTrue(cellCounter == 100);
+    }
+    @Test
+    void ifUndiscoveredCellRightClickedIsFlagged() {
+        Cell mineCenter = new Cell(CellType.MINE, Game.GRIDSIZE + (Game.GRIDSIZE / 2), false, false, handler);
+        handler.rightClick(mineCenter);
+        assertTrue(mineCenter.isFlagged());
+    }
+    @Test
+    void ifNotRightClickedIsNotFlagged() {
+        Cell mineCenterUnFlagged = new Cell(CellType.MINE, Game.GRIDSIZE + (Game.GRIDSIZE / 2), false, false, handler);
+        assertFalse(mineCenterUnFlagged.isFlagged());
+    }
+    @Test
+    void ifFlaggedCellIsRightClickedShouldUnFlagCell() {
+        Cell mineCenterFlagged = new Cell(CellType.MINE, Game.GRIDSIZE + (Game.GRIDSIZE / 2), false, true, handler);
+        handler.rightClick(mineCenterFlagged);
+        assertFalse(mineCenterFlagged.isFlagged());
+    }
+    @Test
+    void if1CellFlaggedShouldReturn1FlaggedCell() {
+        Cell mineCenter1 = new Cell(CellType.MINE, Game.GRIDSIZE + (Game.GRIDSIZE / 2), false, false, handler);
+        handler.rightClick(mineCenter1);
+        assertEquals(1, handler.getFlaggedCells());
     }
 }

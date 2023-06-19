@@ -52,7 +52,6 @@ public class Window {
     }
     public void resetJPanel(int gridSize, Handler handler) {
         JPanel panel = new Grid(new GridLayout(gridSize, gridSize), handler);
-
         frame.setContentPane(panel);
         //initiates with 0 flags posted
         update(0);

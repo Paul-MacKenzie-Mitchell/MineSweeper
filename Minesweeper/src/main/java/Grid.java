@@ -33,7 +33,7 @@ public class Grid extends JPanel {
         return mines;
     }
 
-    public static ArrayList<Cell> getCellGrid() {
+    public ArrayList<Cell> getCellGrid() {
         return cellGrid;
     }
 

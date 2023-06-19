@@ -9,8 +9,14 @@ public class Game {
     private Handler handler =  new Handler();
 
     private Window window = new Window(WIDTH, Height, GRIDSIZE, "Minesweeper", handler);
-
     //getters and setters
+//    public int getMineCount() {
+//        return Game.MINECOUNT;
+//    }
+
+//    public void setMineCount(int mineCount) {
+//        Game.MINECOUNT = mineCount;
+//    }
 
     public Handler getHandler() {
         return handler;

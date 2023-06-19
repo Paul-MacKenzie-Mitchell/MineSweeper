@@ -8,8 +8,12 @@ public class Handler {
     private ArrayList<Cell> queue = new ArrayList<Cell>();
     private static int flaggedCells = 0;
 
-    public static int getFlaggedCells() {
+    public int getFlaggedCells() {
         return flaggedCells;
+    }
+
+    public void setFlaggedCells(int flaggedCells) {
+        Handler.flaggedCells = flaggedCells;
     }
 
     public ArrayList<Cell> getCurrent() {

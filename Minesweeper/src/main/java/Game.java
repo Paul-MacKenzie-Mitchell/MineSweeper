@@ -21,12 +21,6 @@ public class Game {
         return window;
     }
 
-    public void setWindow(Window window) {
-        this.window = window;
-    }
-    public void setWon(boolean won) {
-        this.won = won;
-    }
 
     public int getGridSize() {
         return gridSize;
@@ -35,16 +29,6 @@ public class Game {
     public int getMineCount() {
         return mineCount;
     }
-
-    public Game() {
-        this.window = window;
-        this.handler = handler;
-        this.gridSize = gridSize;
-        this.width = width;
-        this.height = height;
-        this.won = won;
-        this.mineCount = mineCount;
-}
 
     public Game(boolean won, int width, int height, int gridSize, int mineCount, Handler handler) {
         this.won = won;
@@ -56,6 +40,32 @@ public class Game {
     }
 
     public void runGame(Game game) {
-        Window window = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game);
+        this.window = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Game game)) return false;
+
+        if (won != game.won) return false;
+        if (width != game.width) return false;
+        if (height != game.height) return false;
+        if (getGridSize() != game.getGridSize()) return false;
+        if (getMineCount() != game.getMineCount()) return false;
+        if (!getHandler().equals(game.getHandler())) return false;
+        return getWindow().equals(game.getWindow());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (won ? 1 : 0);
+        result = 31 * result + width;
+        result = 31 * result + height;
+        result = 31 * result + getGridSize();
+        result = 31 * result + getMineCount();
+        result = 31 * result + getHandler().hashCode();
+        result = 31 * result + getWindow().hashCode();
+        return result;
     }
 }

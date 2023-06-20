@@ -64,4 +64,17 @@ public class Window {
     public static void update(int flagged) {
         frame.setTitle(title + " | Mines: " + Constants.MINECOUNT + " - Flags: " + flagged);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Window window)) return false;
+
+        return game.equals(window.game);
+    }
+
+    @Override
+    public int hashCode() {
+        return game.hashCode();
+    }
 }

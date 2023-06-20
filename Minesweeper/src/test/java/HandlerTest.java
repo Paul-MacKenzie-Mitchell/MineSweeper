@@ -16,17 +16,13 @@ import static org.mockito.Mockito.when;
 class HandlerTest {
     Handler handler = new Handler();
     Game game = TestHelper.makeGame();
-
-//    Game game = Mockito.mock(Game.class);
     Grid mockGrid = Mockito.mock(Grid.class);
 
     @BeforeEach
     void setup() {
         game.runGame(game);
-//        when(game.getWindow())
-//                .thenReturn(TestHelper.makeWindow());
         when(mockGrid.getBound())
-                .thenReturn(100);
+                .thenReturn((game.getGridSize() * game.getGridSize()));
     }
     @AfterEach
     void reset() {
@@ -287,7 +283,8 @@ class HandlerTest {
         Grid.cellGrid.set(numberLeftColumn.getPosition() - game.getGridSize() + 1, new Cell(CellType.MINE, numberLeftColumn.getPosition() - game.getGridSize() + 1, false, false, handler, game));
         Grid.cellGrid.set(numberLeftColumn.getPosition() + game.getGridSize(), new Cell(CellType.MINE, numberLeftColumn.getPosition() + game.getGridSize(), false, false, handler, game));
         Grid.cellGrid.set(numberLeftColumn.getPosition() + game.getGridSize() + 1, new Cell(CellType.MINE, numberLeftColumn.getPosition() + game.getGridSize() + 1, false, false, handler, game));
-        assertEquals(5, handler.setDangerCountLeftColumn(numberLeftColumn.getPosition(), game));
+        handler.handleNumberCell(numberLeftColumn.getPosition(), numberLeftColumn, game);
+        assertEquals("5", numberLeftColumn.getText());
     }
     @Test
     void numberCellInRightColumnShouldReturnDangerCount5() {

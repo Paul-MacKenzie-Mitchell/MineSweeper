@@ -285,4 +285,20 @@ public class Handler {
             }
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Handler handler)) return false;
+
+        if (!getCurrent().equals(handler.getCurrent())) return false;
+        return getQueue().equals(handler.getQueue());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getCurrent().hashCode();
+        result = 31 * result + getQueue().hashCode();
+        return result;
+    }
 }

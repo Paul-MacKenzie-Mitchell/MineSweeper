@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -9,14 +10,20 @@ import static org.mockito.Mockito.when;
 class WindowTest {
 
     Window window;
-    Game game;
+    Game game = TestHelper.makeGame();
+    Grid mockGrid = Mockito.mock(Grid.class);
+
 
     @BeforeEach
     public void setup() {
-        game = Mockito.mock(Game.class);
-        Window window = TestHelper.makeWindow();
-        when(game.getWindow())
-                .thenReturn(window);
+        game.runGame(game);
+        Window window = game.getWindow();
+        when(mockGrid.getBound())
+                .thenReturn((game.getGridSize() * game.getGridSize()));
+    }
+    @AfterEach
+    void reset() {
+        mockGrid.cellGrid.clear();
     }
     @Test
     void windowNotNull() {

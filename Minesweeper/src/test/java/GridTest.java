@@ -14,7 +14,6 @@ import static org.mockito.Mockito.when;
 class GridTest {
     Handler handler = new Handler();
     Window window = TestHelper.makeWindow();
-    Game game = new Game(window, handler);
 
     @Test
     void stuff() {

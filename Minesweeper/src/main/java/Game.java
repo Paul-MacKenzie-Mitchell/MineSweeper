@@ -1,22 +1,13 @@
 public class Game {
 
     private boolean won = false;
-    public static final int WIDTH = 720;
-    public static final int Height = 720;
-    public static final int GRIDSIZE = 10;
-    public static final int MINECOUNT = (int)Math.round(GRIDSIZE * GRIDSIZE * .1);
+    private int width;
+    private int height;
+    private int gridSize;
+    private int mineCount;
+    private Handler handler;
+    private Window window;
 
-    private Handler handler =  new Handler();
-
-    private Window window = new Window(WIDTH, Height, GRIDSIZE, "Minesweeper", handler);
-    //getters and setters
-//    public int getMineCount() {
-//        return Game.MINECOUNT;
-//    }
-
-//    public void setMineCount(int mineCount) {
-//        Game.MINECOUNT = mineCount;
-//    }
 
     public Handler getHandler() {
         return handler;
@@ -37,15 +28,34 @@ public class Game {
         this.won = won;
     }
 
-    public Game() {
-//    Window window = new Window(WIDTH, Height, GRIDSIZE, "Minesweeper", Game.this, handler);
+    public int getGridSize() {
+        return gridSize;
+    }
 
-}
-    public Game(Window window, Handler handler) {
+    public int getMineCount() {
+        return mineCount;
+    }
+
+    public Game() {
         this.window = window;
         this.handler = handler;
+        this.gridSize = gridSize;
+        this.width = width;
+        this.height = height;
+        this.won = won;
+        this.mineCount = mineCount;
+}
+
+    public Game(boolean won, int width, int height, int gridSize, int mineCount, Handler handler) {
+        this.won = won;
+        this.width = width;
+        this.height = height;
+        this.gridSize = gridSize;
+        this.mineCount = mineCount;
+        this.handler = handler;
     }
-    public static void main(String[] args) {
-        new Game();
+
+    public void runGame(Game game) {
+        Window window = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game);
     }
 }

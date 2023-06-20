@@ -11,7 +11,7 @@ public class Cell extends JButton {
 
     private Handler handler;
 
-    public Cell(CellType type, int position, boolean discovered, boolean flagged, Handler handler) {
+    public Cell(CellType type, int position, boolean discovered, boolean flagged, Handler handler, Game game) {
         this.cellType = type;
         this.position = position;
         this.discovered = discovered;
@@ -24,7 +24,7 @@ public class Cell extends JButton {
                 if(SwingUtilities.isRightMouseButton(e)) {
                         rightClickButton();
                 } else {
-                    clickButton();
+                    clickButton(game);
                 }
             }
 
@@ -66,8 +66,8 @@ public class Cell extends JButton {
         this.flagged = flagged;
     }
 
-    public void clickButton() {
-        handler.click(this);
+    public void clickButton(Game game) {
+        handler.click(this, game);
     }
     public void rightClickButton() {
         handler.rightClick(this);

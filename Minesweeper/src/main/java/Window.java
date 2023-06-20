@@ -6,6 +6,7 @@ public class Window {
     private static String title;
     private static int width;
     private static int height;
+    private Game game;
 
     //Getters and Setters
 
@@ -27,7 +28,7 @@ public class Window {
     }
 //Constructor
 
-    public Window(int width, int height, int gridSize, String title, Handler handler) {
+    public Window(int width, int height, int gridSize, String title, Handler handler, Game game) {
         Window.width = width;
         Window.height = height;
         Window.title = title;
@@ -42,7 +43,7 @@ public class Window {
         //places window in center of screen
         frame.setLocationRelativeTo(null);
 
-        JPanel panel = new Grid(new GridLayout(gridSize, gridSize), handler);
+        JPanel panel = new Grid(new GridLayout(gridSize, gridSize), handler, game);
 
         frame.setContentPane(panel);
         //initiates with 0 flags posted
@@ -51,7 +52,7 @@ public class Window {
         frame.setVisible(true);
     }
     public void resetJPanel(int gridSize, Handler handler) {
-        JPanel panel = new Grid(new GridLayout(gridSize, gridSize), handler);
+        JPanel panel = new Grid(new GridLayout(gridSize, gridSize), handler, game);
         frame.setContentPane(panel);
         //initiates with 0 flags posted
         update(0);
@@ -61,6 +62,6 @@ public class Window {
     //Method Updates the number of flags that have been posted on the board
 
     public static void update(int flagged) {
-        frame.setTitle(title + " | Mines: " + Game.MINECOUNT + " - Flags: " + flagged);
+        frame.setTitle(title + " | Mines: " + Constants.MINECOUNT + " - Flags: " + flagged);
     }
 }

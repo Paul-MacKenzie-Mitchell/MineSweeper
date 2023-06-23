@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.util.concurrent.TimeUnit;
 
 public class App {
 
@@ -18,7 +19,7 @@ public class App {
         game.runGame(game, frame);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Handler handler = new Handler();
         JFrame frame = new JFrame();
         Game game = new Game(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE,
@@ -27,12 +28,13 @@ public class App {
         MainMenu mainMenu = new MainMenu(frame);
 
         do {
-            System.out.println(mainMenu.isPlay());
-            System.out.println(mainMenu.isExit());
+            TimeUnit.SECONDS.sleep(1);
             if ((game.isLost() || game.isWon()) && mainMenu.isMenu()) {
-                game.getWindow().getFrame().dispose();
-                mainMenu = new MainMenu(frame);
-                break;
+                game.getWindow().getFrame().getContentPane().removeAll();
+                game.getWindow().getGrid().getCellGrid().clear();
+                mainMenu.setFrame();
+                game.setLost(false);
+                game.setWon(false);
             }
             if (!game.isLost() && !game.isWon()) {
                 mainMenu.setMenu(true);

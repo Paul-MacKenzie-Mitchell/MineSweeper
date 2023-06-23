@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class Game {
 
@@ -10,6 +11,8 @@ public class Game {
     private int mineCount;
     private Handler handler;
     private Window window;
+
+    private JFrame frame;
 
     public boolean isWon() {
         return won;
@@ -48,12 +51,17 @@ public class Game {
         return mineCount;
     }
 
+    public JFrame getFrame() {
+        return frame;
+    }
+
     public Game(int width, int height, int gridSize, int mineCount, Handler handler, JFrame frame) {
         this.width = width;
         this.height = height;
         this.gridSize = gridSize;
         this.mineCount = mineCount;
         this.handler = handler;
+        this.frame = frame;
     }
 
     public void runGame(Game game, JFrame frame) {

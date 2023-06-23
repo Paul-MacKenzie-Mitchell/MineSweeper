@@ -18,23 +18,7 @@ public class MainMenu extends JFrame implements ActionListener {
         play = false;
         exit = false;
         menu = false;
-        playGameButton = new JButton();
-        playGameButton.addActionListener(this);
-        playGameButton.setBounds(100, 100, 100, 50);
-        playGameButton.setText("PLAY");
-        exitGameButton = new JButton();
-        exitGameButton.addActionListener(this);
-        exitGameButton.setBounds(520,100,100,50);
-        exitGameButton.setText("EXIT");
-
-        frame.setTitle("Welcome to Minesweeper!!!");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(720, 720);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        frame.getContentPane().setBackground(Color.BLACK);
-        frame.add(playGameButton);
-        frame.add(exitGameButton);
+        setFrame();
     }
 
     public boolean isPlay() {
@@ -65,5 +49,24 @@ public class MainMenu extends JFrame implements ActionListener {
         if (e.getSource() == exitGameButton) {
             this.exit = true;
         }
+    }
+    public void setFrame() {
+        playGameButton = new JButton();
+        playGameButton.addActionListener(this);
+        playGameButton.setBounds(100, 100, 100, 50);
+        playGameButton.setText("PLAY");
+        exitGameButton = new JButton();
+        exitGameButton.addActionListener(this);
+        exitGameButton.setBounds(520,100,100,50);
+        exitGameButton.setText("EXIT");
+
+        frame.setTitle("Welcome to Minesweeper!!!");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(720, 720);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        frame.getContentPane().setBackground(Color.BLACK);
+        frame.add(playGameButton);
+        frame.add(exitGameButton);
     }
 }

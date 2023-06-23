@@ -8,6 +8,8 @@ public class Window extends JFrame{
     private static int height;
     private Game game;
 
+    private static Grid grid;
+
     //Getters and Setters
 
     public String getTitle() {
@@ -26,7 +28,11 @@ public class Window extends JFrame{
     public JFrame getFrame() {
         return frame;
     }
-//Constructor
+
+    public static Grid getGrid() {
+        return grid;
+    }
+    //Constructor
 
     public Window(int width, int height, int gridSize, String title, Handler handler, Game game, JFrame frame) {
         Window.width = width;
@@ -43,8 +49,8 @@ public class Window extends JFrame{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //places window in center of screen
         frame.setLocationRelativeTo(null);
-
-        JPanel panel = new Grid(new GridLayout(gridSize, gridSize), handler, game);
+        Window.grid = new Grid(new GridLayout(gridSize, gridSize), handler, game);
+        JPanel panel = grid;
 
         frame.setContentPane(panel);
         //initiates with 0 flags posted
@@ -52,7 +58,7 @@ public class Window extends JFrame{
         frame.pack();
         frame.setVisible(true);
     }
-    public void resetJPanel(int gridSize, Handler handler) {
+    public void resetJPanel(int gridSize, Handler handler, Game game) {
         JPanel panel = new Grid(new GridLayout(gridSize, gridSize), handler, game);
         frame.setContentPane(panel);
         //initiates with 0 flags posted

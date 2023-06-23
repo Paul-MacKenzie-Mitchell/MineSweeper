@@ -1,6 +1,9 @@
+import javax.swing.*;
+
 public class Game {
 
     private boolean won = false;
+    private boolean lost = false;
     private int width;
     private int height;
     private int gridSize;
@@ -8,6 +11,21 @@ public class Game {
     private Handler handler;
     private Window window;
 
+    public boolean isWon() {
+        return won;
+    }
+
+    public boolean isLost() {
+        return lost;
+    }
+
+    public void setWon(boolean won) {
+        this.won = won;
+    }
+
+    public void setLost(boolean lost) {
+        this.lost = lost;
+    }
 
     public Handler getHandler() {
         return handler;
@@ -30,8 +48,7 @@ public class Game {
         return mineCount;
     }
 
-    public Game(boolean won, int width, int height, int gridSize, int mineCount, Handler handler) {
-        this.won = won;
+    public Game(int width, int height, int gridSize, int mineCount, Handler handler, JFrame frame) {
         this.width = width;
         this.height = height;
         this.gridSize = gridSize;
@@ -39,8 +56,8 @@ public class Game {
         this.handler = handler;
     }
 
-    public void runGame(Game game) {
-        this.window = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game);
+    public void runGame(Game game, JFrame frame) {
+        this.window = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game, frame);
     }
 
     @Override

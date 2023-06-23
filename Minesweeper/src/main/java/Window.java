@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Window {
+public class Window extends JFrame{
     private static JFrame frame;
     private static String title;
     private static int width;
@@ -28,11 +28,12 @@ public class Window {
     }
 //Constructor
 
-    public Window(int width, int height, int gridSize, String title, Handler handler, Game game) {
+    public Window(int width, int height, int gridSize, String title, Handler handler, Game game, JFrame frame) {
         Window.width = width;
         Window.height = height;
         Window.title = title;
-        frame = new JFrame(title);
+        Window.frame = frame;
+        frame.dispose();
         //
         frame.setPreferredSize(new Dimension(width, height));
         frame.setResizable(false);
@@ -64,7 +65,12 @@ public class Window {
     public static void update(int flagged) {
         frame.setTitle(title + " | Mines: " + Constants.MINECOUNT + " - Flags: " + flagged);
     }
-
+    public void win() {
+        JOptionPane.showMessageDialog(Window.frame,"You Won!");
+    }
+    public void lose() {
+        JOptionPane.showMessageDialog(Window.frame, "You Lost...");
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

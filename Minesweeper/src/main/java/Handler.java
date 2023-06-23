@@ -1,8 +1,9 @@
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Handler {
 
-
+    private boolean win = false;
     private ArrayList<Cell> current = new ArrayList<Cell>();
 
     private ArrayList<Cell> queue = new ArrayList<Cell>();
@@ -38,7 +39,7 @@ public class Handler {
             } else if (cell.getCellType() == CellType.NUMBER) {
                 handleNumberCell(position, cell, game);
             } else if (cell.getCellType() == CellType.MINE) {
-                handleMineCell(cell);
+                handleMineCell(cell, game);
             }
 
             addToCurrentList(queue, current);
@@ -52,7 +53,7 @@ public class Handler {
     }
 
 
-    public void handleMineCell(Cell cell) {
+    public void handleMineCell(Cell cell, Game game) {
         for (int x = 0; x < Grid.cellGrid.size(); x++) {
             Grid.cellGrid.get(x).setEnabled(false);
             Grid.cellGrid.get(x).setText("");
@@ -61,6 +62,8 @@ public class Handler {
             }
             cell.setText("\uD83D\uDCA3");
         }
+        game.getWindow().lose();
+        game.setLost(true);
     }
 
     public void handleNumberCell(int position, Cell cell, Game game) {
@@ -256,7 +259,7 @@ public class Handler {
         }
         return discoveredCells;
     }
-    public static void winConditionsMet(int discoveredCells, Game game) {
+    public void winConditionsMet(int discoveredCells, Game game) {
         if (discoveredCells == Grid.cellGrid.size() - game.getMineCount()) {
             for (int x = 0; x < Grid.cellGrid.size(); x ++) {
                 if (Grid.cellGrid.get(x).getCellType() == CellType.MINE) {
@@ -267,8 +270,9 @@ public class Handler {
                     Grid.cellGrid.get(x).setText("\uD83E\uDD73");
                 }
             }
+            game.getWindow().win();
+            game.setWon(true);
         }
-
     }
     public void rightClick(Cell cell) {
         if (!cell.isDiscovered()) {

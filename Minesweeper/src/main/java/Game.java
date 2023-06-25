@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 
 public class Game {
 
@@ -63,7 +62,7 @@ public class Game {
         this.handler = handler;
         this.frame = frame;
     }
-
+    //creates JFrame and Grid Window
     public void runGame(Game game, JFrame frame) {
         this.window = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game, frame);
     }

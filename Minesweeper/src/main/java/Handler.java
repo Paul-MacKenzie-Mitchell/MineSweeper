@@ -1,14 +1,13 @@
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class Handler {
 
-    private boolean win = false;
     private ArrayList<Cell> current = new ArrayList<Cell>();
 
     private ArrayList<Cell> queue = new ArrayList<Cell>();
     private static int flaggedCells = 0;
 
+    //Getters and Setters
 
     public int getFlaggedCells() {
         return flaggedCells;
@@ -25,6 +24,8 @@ public class Handler {
     public ArrayList<Cell> getQueue() {
         return queue;
     }
+
+    //Methods
 
     public void click(Cell cell, Game game) {
         int discoveredCells = 0;

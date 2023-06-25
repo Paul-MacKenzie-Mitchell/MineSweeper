@@ -19,8 +19,6 @@ public class Window extends JFrame{
     public int getWidth() {
         return width;
     }
-
-
     public int getHeight() {
         return height;
     }
@@ -32,6 +30,7 @@ public class Window extends JFrame{
     public static Grid getGrid() {
         return grid;
     }
+
     //Constructor
 
     public Window(int width, int height, int gridSize, String title, Handler handler, Game game, JFrame frame) {
@@ -39,8 +38,6 @@ public class Window extends JFrame{
         Window.height = height;
         Window.title = title;
         Window.frame = frame;
-        frame.dispose();
-        //
         frame.setPreferredSize(new Dimension(width, height));
         frame.setResizable(false);
         frame.setMinimumSize(new Dimension(width, height));
@@ -58,19 +55,13 @@ public class Window extends JFrame{
         frame.pack();
         frame.setVisible(true);
     }
-    public void resetJPanel(int gridSize, Handler handler, Game game) {
-        JPanel panel = new Grid(new GridLayout(gridSize, gridSize), handler, game);
-        frame.setContentPane(panel);
-        //initiates with 0 flags posted
-        update(0);
-        frame.pack();
-        frame.setVisible(true);
-    }
-    //Method Updates the number of flags that have been posted on the board
 
+    //Method updates the number of Flags Placed
     public static void update(int flagged) {
         frame.setTitle(title + " | Mines: " + Constants.MINECOUNT + " - Flags: " + flagged);
     }
+
+    //methods for pop up window when game is a win or loss
     public void win() {
         JOptionPane.showMessageDialog(Window.frame,"You Won!");
     }

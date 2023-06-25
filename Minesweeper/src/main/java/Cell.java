@@ -3,7 +3,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class Cell extends JButton {
-    //types: 0 = blank, 1 = Mine, 2= Number
     private CellType cellType;
     private int position;
     private boolean discovered;
@@ -11,12 +10,16 @@ public class Cell extends JButton {
 
     private Handler handler;
 
+    //Constructor
+
     public Cell(CellType type, int position, boolean discovered, boolean flagged, Handler handler, Game game) {
         this.cellType = type;
         this.position = position;
         this.discovered = discovered;
         this.flagged = flagged;
         this.handler = handler;
+
+        //Methods
 
         addMouseListener(new MouseListener() {
             @Override
@@ -42,6 +45,8 @@ public class Cell extends JButton {
         });
     }
 
+    // Getters and Setters
+
     public CellType getCellType() {
         return cellType;
     }
@@ -65,6 +70,8 @@ public class Cell extends JButton {
     public void setFlagged(boolean flagged) {
         this.flagged = flagged;
     }
+
+    // Click Methods
 
     public void clickButton(Game game) {
         handler.click(this, game);

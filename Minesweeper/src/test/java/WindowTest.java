@@ -76,6 +76,6 @@ class WindowTest {
         Grid actual = validWindow.getGrid();
         assertEquals(expected.getBound(), actual.getBound());
         assertEquals(expected.getCellGrid(), actual.getCellGrid());
-        assertEquals(expected.isPicked(), actual.isPicked());
+//        assertEquals(expected.isPicked(), actual.isPicked());
     }
 }

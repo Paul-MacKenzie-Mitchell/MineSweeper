@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,11 @@ class GridTest {
     void setup() {
         handler.setFlaggedCells(0);
         Grid.cellGrid.clear();
-        grid.clearMines();
+        grid.clearMines(grid);
+    }
+    @AfterEach
+    void reset() {
+        Grid.cellGrid.clear();
     }
     @Test
     void shouldCreateCorrectNumberOfCells() {
@@ -34,9 +39,9 @@ class GridTest {
     }
     @Test
     void shouldReturnCorrectBound() {
-        int actaulBound = grid.getBound();
+        int actualBound = grid.getBound();
         int expectedBound = Constants.GRIDSIZE * Constants.GRIDSIZE;
-        assertEquals(expectedBound, actaulBound);
+        assertEquals(expectedBound, actualBound);
     }
 
 }

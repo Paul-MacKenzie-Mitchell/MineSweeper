@@ -74,7 +74,7 @@ class HandlerTest {
 
     }
     @Test
-     void ifBlankCellTopRightShouldAdd3ToQueue() {
+    void ifBlankCellTopRightShouldAdd3ToQueue() {
         Cell blankTopRight = new Cell(CellType.BLANK, game.getGridSize() - 1, false,false, handler, game);
         handler.handleBlankCell(blankTopRight.getPosition(), game);
         assertEquals(3, handler.getQueue().size());

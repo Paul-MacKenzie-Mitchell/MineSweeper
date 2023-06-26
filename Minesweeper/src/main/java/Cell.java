@@ -25,7 +25,7 @@ public class Cell extends JButton {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(SwingUtilities.isRightMouseButton(e)) {
-                        rightClickButton();
+                    rightClickButton();
                 } else {
                     clickButton(game);
                 }

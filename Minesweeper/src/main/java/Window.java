@@ -70,4 +70,16 @@ public class Window extends JFrame {
     public void lose() {
         JOptionPane.showMessageDialog(Window.frame, "You Lost...");
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Window window)) return false;
+
+        return game.equals(window.game);
+    }
+
+    @Override
+    public int hashCode() {
+        return game.hashCode();
+    }
 }

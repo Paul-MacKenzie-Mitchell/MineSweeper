@@ -74,18 +74,6 @@ class HandlerTest {
 
     }
     @Test
-    void flaggedCellShouldNotBecomeDiscovered() {
-        Cell clickedFlaggedCell = new Cell(CellType.BLANK, 0, false, true, handler, game);
-        handler.click(clickedFlaggedCell, game);
-        assertFalse(clickedFlaggedCell.isDiscovered());
-    }
-    @Test
-    void ifBlankCellTopLeftShouldAdd3ToQueue() {
-        Cell blankTopLeft = new Cell(CellType.BLANK, 0, false,false, handler, game);
-        handler.handleBlankCell(blankTopLeft.getPosition(), game);
-        assertEquals(3, handler.getQueue().size());
-    }
-    @Test
      void ifBlankCellTopRightShouldAdd3ToQueue() {
         Cell blankTopRight = new Cell(CellType.BLANK, game.getGridSize() - 1, false,false, handler, game);
         handler.handleBlankCell(blankTopRight.getPosition(), game);

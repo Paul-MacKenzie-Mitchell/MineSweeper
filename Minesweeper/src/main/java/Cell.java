@@ -3,8 +3,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class Cell extends JButton {
-    private final CellType cellType;
-    private final int position;
+    private CellType cellType;
+    private int position;
     private boolean discovered;
     private boolean flagged;
 

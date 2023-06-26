@@ -1,51 +1,43 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Window {
+public class Window extends JFrame{
     private static JFrame frame;
     private static String title;
     private static int width;
     private static int height;
+    private Game game;
+
+    private static Grid grid;
 
     //Getters and Setters
 
-    public JFrame getFrame() {
-        return frame;
-    }
-    public void setFrame(JFrame frame) {
-        Window.frame = frame;
-    }
     public String getTitle() {
         return title;
-    }
-    public void setTitle(String title) {
-        Window.title = title;
     }
 
     public int getWidth() {
         return width;
     }
-
-    public void setWidth(int width) {
-        Window.width = width;
-    }
-
     public int getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
-        Window.height = height;
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public static Grid getGrid() {
+        return grid;
     }
 
     //Constructor
 
-    public Window(int width, int height, int gridSize, String title, Handler handler) {
+    public Window(int width, int height, int gridSize, String title, Handler handler, Game game, JFrame frame) {
         Window.width = width;
         Window.height = height;
         Window.title = title;
-        frame = new JFrame(title);
-        //
+        Window.frame = frame;
         frame.setPreferredSize(new Dimension(width, height));
         frame.setResizable(false);
         frame.setMinimumSize(new Dimension(width, height));
@@ -54,8 +46,8 @@ public class Window {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //places window in center of screen
         frame.setLocationRelativeTo(null);
-
-        JPanel panel = new Grid(new GridLayout(gridSize, gridSize), handler);
+        Window.grid = new Grid(new GridLayout(gridSize, gridSize), handler, game);
+        JPanel panel = grid;
 
         frame.setContentPane(panel);
         //initiates with 0 flags posted
@@ -64,9 +56,28 @@ public class Window {
         frame.setVisible(true);
     }
 
-    //Method Updates the number of flags that have been posted on the board
-
+    //Method updates the number of Flags Placed
     public static void update(int flagged) {
-        frame.setTitle(title + " | Mines: " + Game.MINECOUNT + " - Flags: " + flagged);
+        frame.setTitle(title + " | Mines: " + Constants.MINECOUNT + " - Flags: " + flagged);
+    }
+
+    //methods for pop up window when game is a win or loss
+    public void win() {
+        JOptionPane.showMessageDialog(Window.frame,"You Won!");
+    }
+    public void lose() {
+        JOptionPane.showMessageDialog(Window.frame, "You Lost...");
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Window window)) return false;
+
+        return game.equals(window.game);
+    }
+
+    @Override
+    public int hashCode() {
+        return game.hashCode();
     }
 }

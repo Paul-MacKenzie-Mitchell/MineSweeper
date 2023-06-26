@@ -1,21 +1,21 @@
-public class TestHelper {
-        public static final int WIDTH = 720;
-        public static final int HEIGHT= 720;
-        public static final int GRIDSIZE = 10;
-        public static final int MINECOUNT = (int) Math.round(GRIDSIZE * GRIDSIZE * .1);
+import javax.swing.*;
+import java.util.ArrayList;
 
+public class TestHelper {
+        private static JFrame frame = new JFrame();
         private static Handler handler = new Handler();
 
+        private static Game game = new Game( Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE,
+            Constants.MINECOUNT, handler, frame);
+
         public static Game makeGame() {
-            Game game = new Game();
+            Game game = new Game( Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE,
+                    Constants.MINECOUNT, handler, frame);
             return game;
         }
 
         public static Window makeWindow() {
-            Game game = new Game();
-            Window window = game.getWindow();
+            Window window = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game, frame);
             return window;
         }
-
-
     }

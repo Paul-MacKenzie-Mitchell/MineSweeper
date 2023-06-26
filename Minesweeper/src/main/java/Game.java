@@ -1,12 +1,33 @@
+import javax.swing.*;
+
 public class Game {
-    public static final int WIDTH = 720;
-    public static final int Height = 720;
-    public static final int GRIDSIZE = 10;
-    public static final int MINECOUNT = (int)Math.round(GRIDSIZE * GRIDSIZE * .1);
 
-    private Handler handler =  new Handler();
+    private boolean won = false;
+    private boolean lost = false;
+    private int width;
+    private int height;
+    private int gridSize;
+    private int mineCount;
+    private Handler handler;
+    private Window window;
 
-    private Window window = new Window(WIDTH, Height, GRIDSIZE, "Minesweeper", handler);
+    private JFrame frame;
+
+    public boolean isWon() {
+        return won;
+    }
+
+    public boolean isLost() {
+        return lost;
+    }
+
+    public void setWon(boolean won) {
+        this.won = won;
+    }
+
+    public void setLost(boolean lost) {
+        this.lost = lost;
+    }
 
     public Handler getHandler() {
         return handler;
@@ -20,16 +41,55 @@ public class Game {
         return window;
     }
 
-    public void setWindow(Window window) {
-        this.window = window;
+
+    public int getGridSize() {
+        return gridSize;
     }
 
-    public Game() {
-//    Window window = new Window(WIDTH, Height, GRIDSIZE, "Minesweeper", Game.this, handler);
+    public int getMineCount() {
+        return mineCount;
+    }
 
-}
+    public JFrame getFrame() {
+        return frame;
+    }
 
-    public static void main(String[] args) {
-        new Game();
+    public Game(int width, int height, int gridSize, int mineCount, Handler handler, JFrame frame) {
+        this.width = width;
+        this.height = height;
+        this.gridSize = gridSize;
+        this.mineCount = mineCount;
+        this.handler = handler;
+        this.frame = frame;
+    }
+    //creates JFrame and Grid Window
+    public void runGame(Game game, JFrame frame) {
+        this.window = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game, frame);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Game game)) return false;
+
+        if (won != game.won) return false;
+        if (width != game.width) return false;
+        if (height != game.height) return false;
+        if (getGridSize() != game.getGridSize()) return false;
+        if (getMineCount() != game.getMineCount()) return false;
+        if (!getHandler().equals(game.getHandler())) return false;
+        return getWindow().equals(game.getWindow());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (won ? 1 : 0);
+        result = 31 * result + width;
+        result = 31 * result + height;
+        result = 31 * result + getGridSize();
+        result = 31 * result + getMineCount();
+        result = 31 * result + getHandler().hashCode();
+        result = 31 * result + getWindow().hashCode();
+        return result;
     }
 }

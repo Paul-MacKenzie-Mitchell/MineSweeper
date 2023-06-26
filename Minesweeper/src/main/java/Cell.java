@@ -8,7 +8,7 @@ public class Cell extends JButton {
     private boolean discovered;
     private boolean flagged;
 
-    private Handler handler;
+    private final Handler handler;
 
     //Constructor
 
@@ -25,7 +25,7 @@ public class Cell extends JButton {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(SwingUtilities.isRightMouseButton(e)) {
-                        rightClickButton();
+                    rightClickButton();
                 } else {
                     clickButton(game);
                 }

@@ -30,13 +30,13 @@ public class Handler {
     public void click(Cell cell, Game game) {
         int discoveredCells = 0;
         if (!cell.isFlagged()) {
-                cell.setEnabled(false);
-                cell.setDiscovered(true);
+            cell.setEnabled(false);
+            cell.setDiscovered(true);
 
             int position = cell.getPosition();
             //Determine Action Taken
             if (cell.getCellType() == CellType.BLANK) {
-               handleBlankCell(position, game);
+                handleBlankCell(position, game);
             } else if (cell.getCellType() == CellType.NUMBER) {
                 handleNumberCell(position, cell, game);
             } else if (cell.getCellType() == CellType.MINE) {
@@ -290,7 +290,6 @@ public class Handler {
             }
         }
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -117,4 +117,7 @@ public class Grid extends JPanel {
             add(cellGrid.get(i));
         }
     }
+    public void clearMines(Grid grid) {
+        grid.mines.clear();
+    }
 }

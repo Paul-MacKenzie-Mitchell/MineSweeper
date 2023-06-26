@@ -1,8 +1,6 @@
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,7 +17,7 @@ class GameTest {
     }
     @AfterEach
     void reset() {
-        mockGrid.cellGrid.clear();
+        Grid.cellGrid.clear();
     }
     @Test
     void newGameShouldNotBeNull() {
@@ -45,15 +43,32 @@ class GameTest {
         expected.setFlaggedCells(9);
         game.setHandler(expected);
         assertEquals(9, game.getHandler().getFlaggedCells());
-        assertTrue(expected.equals(game.getHandler()));
+        assertEquals(expected, game.getHandler());
     }
-//    @Test
-//    void getWindowShouldReturnExpectedWindow() {
-//        Game game = TestHelper.makeGame();
-//        Window expected = TestHelper.makeWindow();
-//        assertTrue(expected.equals(game.getWindow()));
-//        System.out.println(game.getWindow().getHeight());
-//        System.out.println(expected.getHeight());
-//    }
-
+    @Test
+    void shouldReturnNotWon() {
+        boolean acutalWon = game.isWon();
+        boolean expected = false;
+        assertEquals(expected, acutalWon);
+    }
+    @Test
+    void shouldReturnNotLost() {
+        boolean acutalLost = game.isLost();
+        boolean expected = false;
+        assertEquals(expected, acutalLost);
+    }
+    @Test
+    void shouldSetGameToWon() {
+        game.setWon(true);
+        boolean acutalWon = game.isWon();
+        boolean expected = true;
+        assertEquals(expected, acutalWon);
+    }
+    @Test
+    void shouldSetGameToLost() {
+        game.setLost(true);
+        boolean acutalLost = game.isLost();
+        boolean expected = true;
+        assertEquals(expected, acutalLost);
+    }
 }

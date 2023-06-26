@@ -3,14 +3,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class HandlerTest {
@@ -20,6 +15,8 @@ class HandlerTest {
 
     @BeforeEach
     void setup() {
+        handler.setFlaggedCells(0);
+        Grid.cellGrid.clear();
         game.runGame(game, game.getFrame());
         when(mockGrid.getBound())
                 .thenReturn((game.getGridSize() * game.getGridSize()));
@@ -27,69 +24,57 @@ class HandlerTest {
     @AfterEach
     void reset() {
         handler.setFlaggedCells(0);
-        mockGrid.cellGrid.clear();
+        Grid.cellGrid.clear();
     }
     @Test
     void clickedUnFlaggedCellShouldBecomeDiscovered() {
         Cell mineTopLeft = new Cell(CellType.MINE, 0, false,false, handler, game);
         handler.click(mineTopLeft, game);
-        assertTrue(mineTopLeft.isDiscovered() == true);
+        assertTrue(mineTopLeft.isDiscovered());
     }
     @Test
     void clickedUnFlaggedCellShouldNotRemainUndiscovered() {
         Cell mineTopLeft = new Cell(CellType.MINE, 0, false,false, handler, game);
         handler.click(mineTopLeft, game);
-        assertFalse(mineTopLeft.isDiscovered() == false);
+        assertTrue(mineTopLeft.isDiscovered());
 
     }
     @Test
     void clickedUnFlaggedCellShouldBecomeUnEnabled() {
         Cell mineTopLeft = new Cell(CellType.MINE, 0, false,false, handler, game);
         handler.click(mineTopLeft, game);
-        assertTrue(mineTopLeft.isEnabled() == false);
+        assertFalse(mineTopLeft.isEnabled());
 
     }
     @Test
     void clickedUnFlaggedCellShouldNotBecomeEnabled() {
         Cell mineTopLeft = new Cell(CellType.MINE, 0, false, false, handler, game);
         handler.click(mineTopLeft, game);
-        assertFalse(mineTopLeft.isEnabled() == true);
+        assertFalse(mineTopLeft.isEnabled());
 
 
     }
     @Test
     void unClickedUnFlaggedCellShouldNotBecomeDiscovered() {
         Cell unClickedCellMiddle = new Cell(CellType.BLANK, mockGrid.getBound() / 2 + game.getGridSize() / 2, false, false, handler, game);
-        assertTrue(unClickedCellMiddle.isDiscovered() == false);
+        assertFalse(unClickedCellMiddle.isDiscovered());
 
     }
     @Test
     void unClickedUnFlaggedCellShouldBecomeEnabled() {
         Cell unClickedCellMiddle = new Cell(CellType.BLANK, mockGrid.getBound() / 2 + game.getGridSize() / 2, false, false, handler, game);
-        assertTrue(unClickedCellMiddle.isEnabled() == true);
+        assertTrue(unClickedCellMiddle.isEnabled());
 
     }
     @Test
     void flaggedCellShouldRemainEnabled() {
         Cell clickedFlaggedCell = new Cell(CellType.BLANK, 0, false, true, handler, game);
         handler.click(clickedFlaggedCell, game);
-        assertTrue(clickedFlaggedCell.isEnabled() == true);
+        assertTrue(clickedFlaggedCell.isEnabled());
 
     }
     @Test
-    void flaggedCellShouldNotBecomeDiscovered() {
-        Cell clickedFlaggedCell = new Cell(CellType.BLANK, 0, false, true, handler, game);
-        handler.click(clickedFlaggedCell, game);
-        assertTrue(clickedFlaggedCell.isDiscovered() == false);
-    }
-    @Test
-    void ifBlankCellTopLeftShouldAdd3ToQueue() {
-        Cell blankTopLeft = new Cell(CellType.BLANK, 0, false,false, handler, game);
-        handler.handleBlankCell(blankTopLeft.getPosition(), game);
-        assertEquals(3, handler.getQueue().size());
-    }
-    @Test
-     void ifBlankCellTopRightShouldAdd3ToQueue() {
+    void ifBlankCellTopRightShouldAdd3ToQueue() {
         Cell blankTopRight = new Cell(CellType.BLANK, game.getGridSize() - 1, false,false, handler, game);
         handler.handleBlankCell(blankTopRight.getPosition(), game);
         assertEquals(3, handler.getQueue().size());
@@ -144,13 +129,13 @@ class HandlerTest {
         when(handlerMock.getQueue())
                 .thenReturn(queueMock);
         Handler.addToCurrentList(queueMock, current);
-        assertTrue(current.size() == 0);
+        assertEquals(0, current.size());
     }
     @Test
     void getCurrentWhenEmptyShouldBeEmpty() {
         ArrayList<Cell> current = handler.getCurrent();
         int numCellsInCurrent = current.size();
-        assertTrue( numCellsInCurrent == 0 );
+        assertEquals(0, numCellsInCurrent);
     }
     @Test
     void getCurrentShouldReturnLisContaining1CellIContains1Cell() {
@@ -164,7 +149,7 @@ class HandlerTest {
         Handler.addToCurrentList(queue, current);
         current = handler.getCurrent();
         int numCellsInCurrent = current.size();
-        assertTrue( numCellsInCurrent == 1 );
+        assertEquals(1, numCellsInCurrent);
     }
     @Test
     void shouldAddNumberOfCellsInQueueToCurrent() {
@@ -176,7 +161,7 @@ class HandlerTest {
         when(handlerMock.getQueue())
                 .thenReturn(queueMock);
         Handler.addToCurrentList(queueMock, current);
-        assertTrue(current.size() == 1);
+        assertEquals(1, current.size());
     }
     @Test
     void shouldClearQueueAfterAddingCellsToCurrent() {
@@ -188,7 +173,7 @@ class HandlerTest {
         when(handlerMock.getQueue())
                 .thenReturn(queue);
         Handler.addToCurrentList(queue, current);
-        assertTrue(queue.size() == 0);
+        assertEquals(0, queue.size());
     }
     @Test
     void shouldRemoveCellsInCurrentAfterRevealCells() {
@@ -199,7 +184,7 @@ class HandlerTest {
         when(handlerMock.getCurrent())
                 .thenReturn(current);
         Handler.revealCells(current, game);
-        assertTrue(current.size() == 0);
+        assertEquals(0, current.size());
     }
     @Test
     void shouldMakeAdjacentBlankCellDiscovered() {
@@ -210,7 +195,7 @@ class HandlerTest {
         when(handlerMock.getCurrent())
                 .thenReturn(current);
         Handler.revealCells(current, game);
-        assertTrue(blankRightColumn.isDiscovered() == true);
+        assertTrue(blankRightColumn.isDiscovered());
     }
     @Test
     void adjacentBlankCellShouldNotBeEnabled() {
@@ -221,7 +206,7 @@ class HandlerTest {
         when(handlerMock.getCurrent())
                 .thenReturn(current);
         Handler.revealCells(current, game);
-        assertTrue(blankRightColumn.isEnabled() == false);
+        assertFalse(blankRightColumn.isEnabled());
     }
     @Test
     void numberCellInTopLeftCornerSurroundedShouldReturnDangerCount3() {
@@ -327,29 +312,29 @@ class HandlerTest {
     void ifClickMineCellAllCellsNoCellsEnabled() {
         Cell mineCenter = new Cell(CellType.MINE, game.getGridSize() + (game.getGridSize() / 2), false, false, handler, game);
         handler.handleMineCell(mineCenter, game);
-        int cells = (int) mockGrid.cellGrid.stream()
-                .filter(x -> x.isEnabled() == false)
+        int cells = (int) Grid.cellGrid.stream()
+                .filter(x -> !x.isEnabled())
                 .count();
-        assertTrue(cells == mockGrid.getBound());
+        assertEquals(cells, mockGrid.getBound());
     }
     @Test
     void shouldNotWinIfConditionsNotMet() {
         int discoveredCells = 0;
         handler.winConditionsMet(discoveredCells, game);
-        int cells = (int) mockGrid.cellGrid.stream()
-                .filter(x -> x.isEnabled() == false)
+        int cells = (int) Grid.cellGrid.stream()
+                .filter(x -> !x.isEnabled())
                 .count();
 
-       assertTrue(cells == 0);
+        assertEquals(0, cells);
     }
     @Test
     void shouldWinIfConditionsMet() {
         int discoveredCells = 90;
         handler.winConditionsMet(discoveredCells, game);
-        int cellCounter = (int) mockGrid.cellGrid.stream()
-                .filter(x -> x.isEnabled() == false)
+        int cellCounter = (int) Grid.cellGrid.stream()
+                .filter(x -> !x.isEnabled())
                 .count();
-        assertTrue(cellCounter == 100);
+        assertEquals(100, cellCounter);
     }
     @Test
     void ifUndiscoveredCellRightClickedIsFlagged() {

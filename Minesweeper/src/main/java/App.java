@@ -5,6 +5,8 @@ public class App {
 
     public static void playGame(MainMenu mainMenu, Game game, JFrame frame) {
         while (!mainMenu.isExit()) {
+            System.out.println(mainMenu.isExit());
+            System.out.println(mainMenu.isPlay());
             if (mainMenu.isPlay()) {
                 game.setLost(false);
                 game.setWon(false);

@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,7 +50,6 @@ public class MainMenu extends JFrame implements ActionListener {
             this.exit = true;
         }
     }
-
     public void setFrame() {
         playGameButton = new JButton();
         playGameButton.addActionListener(this);
@@ -62,14 +60,12 @@ public class MainMenu extends JFrame implements ActionListener {
         exitGameButton.setBounds(520,100,100,50);
         exitGameButton.setText("EXIT");
 
-
         frame.setTitle("Welcome to Minesweeper!!!");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(720, 720);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.getContentPane().setBackground(Color.BLACK);
-
         frame.add(playGameButton);
         frame.add(exitGameButton);
     }

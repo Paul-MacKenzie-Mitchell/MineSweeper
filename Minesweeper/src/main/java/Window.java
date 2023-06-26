@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Window extends JFrame{
+public class Window extends JFrame {
     private static JFrame frame;
     private static String title;
     private static int width;
@@ -19,6 +19,7 @@ public class Window extends JFrame{
     public int getWidth() {
         return width;
     }
+
     public int getHeight() {
         return height;
     }
@@ -63,21 +64,10 @@ public class Window extends JFrame{
 
     //methods for pop up window when game is a win or loss
     public void win() {
-        JOptionPane.showMessageDialog(Window.frame,"You Won!");
+        JOptionPane.showMessageDialog(Window.frame, "You Won!");
     }
+
     public void lose() {
         JOptionPane.showMessageDialog(Window.frame, "You Lost...");
-    }
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Window window)) return false;
-
-        return game.equals(window.game);
-    }
-
-    @Override
-    public int hashCode() {
-        return game.hashCode();
     }
 }

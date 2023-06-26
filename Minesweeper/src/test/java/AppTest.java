@@ -3,9 +3,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import javax.swing.*;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 class AppTest {
@@ -19,7 +17,7 @@ class AppTest {
     }
     @AfterEach
     void reset() {
-        mockGrid.cellGrid.clear();
+        Grid.cellGrid.clear();
     }
     @Test
     void shouldReturnValidWindowWhenGameRun() {

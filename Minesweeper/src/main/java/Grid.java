@@ -10,7 +10,7 @@ public class Grid extends JPanel {
 
 
     //position of mines in grid
-    private ArrayList<Integer> mines = new ArrayList<Integer>();
+    private static final ArrayList<Integer> mines = new ArrayList<Integer>();
 
     //cells in grid
     public static ArrayList<Cell> cellGrid = new ArrayList<Cell>();
@@ -21,9 +21,10 @@ public class Grid extends JPanel {
         createCells(handler, game);
         addCells();
     }
-//    public ArrayList<Integer> getMines() {
-//        return mines;
-//    }
+
+    public boolean isPicked() {
+        return picked;
+    }
 
     public ArrayList<Cell> getCellGrid() {
         return cellGrid;
@@ -116,5 +117,8 @@ public class Grid extends JPanel {
         for (int i = 0; i < cellGrid.size(); i++) {
             add(cellGrid.get(i));
         }
+    }
+    public void clearMines() {
+        Grid.mines.clear();
     }
 }

@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 public class Handler {
 
-    private ArrayList<Cell> current = new ArrayList<Cell>();
+    private final ArrayList<Cell> current = new ArrayList<Cell>();
 
-    private ArrayList<Cell> queue = new ArrayList<Cell>();
+    private final ArrayList<Cell> queue = new ArrayList<Cell>();
     private static int flaggedCells = 0;
 
     //Getters and Setters
@@ -289,21 +289,5 @@ public class Handler {
                 Window.update(flaggedCells);
             }
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Handler handler)) return false;
-
-        if (!getCurrent().equals(handler.getCurrent())) return false;
-        return getQueue().equals(handler.getQueue());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getCurrent().hashCode();
-        result = 31 * result + getQueue().hashCode();
-        return result;
     }
 }

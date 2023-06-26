@@ -1,5 +1,5 @@
 public enum CellType {
     BLANK,
     MINE,
-    NUMBER;
+    NUMBER
 }

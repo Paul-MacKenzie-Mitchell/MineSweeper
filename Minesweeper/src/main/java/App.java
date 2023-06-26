@@ -2,7 +2,9 @@ import javax.swing.*;
 import java.util.concurrent.TimeUnit;
 
 public class App {
-
+    public static void main(String[] args) throws InterruptedException {
+        gameLoop();
+    }
     public static void playGame(MainMenu mainMenu, Game game, JFrame frame) {
         while (!mainMenu.isExit()) {
             if (mainMenu.isPlay()) {
@@ -16,6 +18,7 @@ public class App {
         }
         game.runGame(game, frame);
     }
+
     public static void gameLoop() throws InterruptedException {
         //Initializes objects for game
         Handler handler = new Handler();
@@ -29,7 +32,7 @@ public class App {
             //if a game has just been won or lost clears frame and grid and sets the main menu frame
             if ((game.isLost() || game.isWon()) && mainMenu.isMenu()) {
                 game.getWindow().getFrame().getContentPane().removeAll();
-                game.getWindow().getGrid().getCellGrid().clear();
+                Window.getGrid().getCellGrid().clear();
                 mainMenu.setFrame();
                 game.setLost(false);
                 game.setWon(false);
@@ -47,8 +50,5 @@ public class App {
         if (mainMenu.isExit()) {
             System.exit(0);
         }
-    }
-    public static void main(String[] args) throws InterruptedException {
-        gameLoop();
     }
 }

@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainMenu extends JFrame implements ActionListener {
-    private JFrame frame;
+    private final JFrame frame;
     private JButton playGameButton;
     private JButton exitGameButton;
 

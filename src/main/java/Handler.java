@@ -63,7 +63,8 @@ public class Handler {
             }
             cell.setText("\uD83D\uDCA3");
         }
-        game.getWindow().lose();
+        game.getWindow().lose(game.getWindow());
+
         game.setLost(true);
     }
 
@@ -271,7 +272,7 @@ public class Handler {
                     Grid.cellGrid.get(x).setText("\uD83E\uDD73");
                 }
             }
-            game.getWindow().win();
+            game.getWindow().win(game.getWindow());
             game.setWon(true);
         }
     }

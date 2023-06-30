@@ -1,14 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Window extends JFrame {
+public class Window extends JFrame implements ActionListener{
     private static JFrame frame;
     private static String title;
     private static int width;
     private static int height;
     private Game game;
+    private static JButton end;
 
     private static Grid grid;
+    private static JOptionPane message;
+    private static boolean clicked;
 
     //Getters and Setters
 
@@ -32,13 +37,20 @@ public class Window extends JFrame {
         return grid;
     }
 
-    //Constructor
+
+//Constructor
 
     public Window(int width, int height, int gridSize, String title, Handler handler, Game game, JFrame frame) {
+        Window.clicked = false;
         Window.width = width;
         Window.height = height;
         Window.title = title;
         Window.frame = frame;
+        Window.end = new JButton();
+        end.setBounds(100, 100, 100, 50);
+        end.setText("end");
+        end.setVisible(true);
+
         frame.setPreferredSize(new Dimension(width, height));
         frame.setResizable(false);
         frame.setMinimumSize(new Dimension(width, height));
@@ -63,12 +75,17 @@ public class Window extends JFrame {
     }
 
     //methods for pop up window when game is a win or loss
-    public void win() {
-        JOptionPane.showMessageDialog(Window.frame, "You Won!");
+    public void win(Window window) {
+        window.getFrame().setTitle("You Won!!!!");
     }
 
-    public void lose() {
-        JOptionPane.showMessageDialog(Window.frame, "You Lost...");
+    public void lose(Window window) {
+
+        window.getFrame().setTitle("Game Over You Lost...");
+    }
+    public void setLoseFrame() {
+        end.setBounds(100, 100, 100, 50);
+        end.setText("end");
     }
     @Override
     public boolean equals(Object o) {
@@ -81,5 +98,13 @@ public class Window extends JFrame {
     @Override
     public int hashCode() {
         return game.hashCode();
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == end) {
+            this.clicked = true;
+        }
     }
 }

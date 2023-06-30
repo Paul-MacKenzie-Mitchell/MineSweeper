@@ -5,10 +5,8 @@ public class App {
     public static void main(String[] args) throws InterruptedException {
         gameLoop();
     }
-    public static void playGame(MainMenu mainMenu, Game game, JFrame frame) {
+    public static void playGame(MainMenu mainMenu, Game game, JFrame frame) throws InterruptedException {
         while (!mainMenu.isExit()) {
-            System.out.println(mainMenu.isExit());
-            System.out.println(mainMenu.isPlay());
             if (mainMenu.isPlay()) {
                 game.setLost(false);
                 game.setWon(false);
@@ -33,6 +31,7 @@ public class App {
             TimeUnit.SECONDS.sleep(1);
             //if a game has just been won or lost clears frame and grid and sets the main menu frame
             if ((game.isLost() || game.isWon()) && mainMenu.isMenu()) {
+                TimeUnit.SECONDS.sleep(3);
                 game.getWindow().getFrame().getContentPane().removeAll();
                 Window.getGrid().getCellGrid().clear();
                 mainMenu.setFrame();

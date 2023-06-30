@@ -2,13 +2,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-class HandlerTest {
+class
+HandlerTest {
     Handler handler = new Handler();
     Game game = TestHelper.makeGame();
     Grid mockGrid = Mockito.mock(Grid.class);
@@ -30,6 +30,10 @@ class HandlerTest {
     void clickedUnFlaggedCellShouldBecomeDiscovered() {
         Cell mineTopLeft = new Cell(CellType.MINE, 0, false,false, handler, game);
         handler.click(mineTopLeft, game);
+//        ActionEvent e = new ActionEvent(MouseEvent,);
+//        JButton buttonToSimulateClicking = new JButton(...);
+//        buttonToSimulateClicking.doClick(); // As simple as that !;
+//        game.getWindow().actionPerformed(e);
         assertTrue(mineTopLeft.isDiscovered());
     }
     @Test
@@ -331,10 +335,13 @@ class HandlerTest {
     void shouldWinIfConditionsMet() {
         int discoveredCells = 90;
         handler.winConditionsMet(discoveredCells, game);
+
         int cellCounter = (int) Grid.cellGrid.stream()
                 .filter(x -> !x.isEnabled())
                 .count();
+
         assertEquals(100, cellCounter);
+        game.getWindow().getFrame().dispose();
     }
     @Test
     void ifUndiscoveredCellRightClickedIsFlagged() {

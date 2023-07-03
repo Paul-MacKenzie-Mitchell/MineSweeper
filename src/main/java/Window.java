@@ -87,18 +87,7 @@ public class Window extends JFrame implements ActionListener{
         end.setBounds(100, 100, 100, 50);
         end.setText("end");
     }
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Window window)) return false;
 
-        return game.equals(window.game);
-    }
-
-    @Override
-    public int hashCode() {
-        return game.hashCode();
-    }
 
 
     @Override

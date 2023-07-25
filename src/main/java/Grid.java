@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Grid extends JPanel {
     //Total number of cells
@@ -21,9 +24,6 @@ public class Grid extends JPanel {
         createCells(handler, game);
         addCells();
     }
-//    public ArrayList<Integer> getMines() {
-//        return mines;
-//    }
 
     public ArrayList<Cell> getCellGrid() {
         return cellGrid;
@@ -37,16 +37,17 @@ public class Grid extends JPanel {
     }
 
     public void createCells(Handler handler, Game game) {
+
         createMineLocations(game);
         // Creates types of cells for each of the positions in the grid
         for (int i = 0; i < bound; i++) {
             // if this position has been determined to be a mine creates a mine cell and add it to the gridCell list
             if (mines.contains(i)) {
                 cellGrid.add(new Cell(CellType.MINE, i, false, false, handler, game));
-            // if the position of the cell is on the left column of the grid
+                // if the position of the cell is on the left column of the grid
             } else if (i % game.getGridSize() == 0){
                 farLeftColumnCellAssignment(i, handler, game);
-            // if the position of the cell is on the far right column
+                // if the position of the cell is on the far right column
             } else if (i % game.getGridSize() == game.getGridSize() - 1){
                 farRightColumnCellAssignment(i, handler, game);
             } else {
@@ -100,21 +101,21 @@ public class Grid extends JPanel {
     }
 
     public void createMineLocations(Game game) {
-        for (int i = 1; i <= game.getMineCount(); i++) {
-            while (!picked) {
-                int minePosition = (int)(Math.random() * bound);
-                if (!mines.contains(minePosition)) {
-                    mines.add(minePosition);
-                    picked = true;
-                }
-            }
-            picked = false;
+
+        List<Integer> randomMinePlacement = new ArrayList<>();
+        for (int i = 0; i <= game.getGridSize() * game.getGridSize(); i++) {
+            randomMinePlacement.add(i);
         }
+        Collections.shuffle(randomMinePlacement);
+        randomMinePlacement.stream().limit(game.getMineCount()).forEach(m -> picked = true);
+        mines = (ArrayList<Integer>) randomMinePlacement.stream()
+                .limit(game.getMineCount())
+                .collect(Collectors.toList());
     }
     //Add the cells to the JPanel from cellGrid List
     private void addCells() {
-        for (int i = 0; i < cellGrid.size(); i++) {
-            add(cellGrid.get(i));
+        for (Cell cell : cellGrid) {
+            add(cell);
         }
     }
     public void clearMines(Grid grid) {

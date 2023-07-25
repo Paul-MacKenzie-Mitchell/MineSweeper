@@ -4,6 +4,18 @@ public class Game {
 
     private boolean won = false;
     private boolean lost = false;
+    private boolean menu = true;
+
+    public boolean isPlay() {
+        return play;
+    }
+
+    public void setPlay(boolean play) {
+        this.play = play;
+    }
+
+    private boolean play = false;
+    private boolean exit = false;
     private final int width;
     private final int height;
     private final int gridSize;
@@ -52,6 +64,22 @@ public class Game {
 
     public JFrame getFrame() {
         return frame;
+    }
+
+    public boolean isMenu() {
+        return menu;
+    }
+
+    public void setMenu(boolean menu) {
+        this.menu = menu;
+    }
+
+    public boolean isExit() {
+        return exit;
+    }
+
+    public void setExit(boolean exit) {
+        this.exit = exit;
     }
 
     public Game(int width, int height, int gridSize, int mineCount, Handler handler, JFrame frame) {

@@ -274,6 +274,7 @@ public class Handler {
             }
             game.getWindow().win(game.getWindow());
             game.setWon(true);
+            game.setMenu(true);
         }
     }
     public void rightClick(Cell cell) {

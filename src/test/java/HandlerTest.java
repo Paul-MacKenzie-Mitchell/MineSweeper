@@ -18,6 +18,7 @@ HandlerTest {
         handler.setFlaggedCells(0);
         Grid.cellGrid.clear();
         game.runGame(game, game.getFrame());
+        game.getWindow().play();
         when(mockGrid.getBound())
                 .thenReturn((game.getGridSize() * game.getGridSize()));
     }

@@ -73,6 +73,7 @@ class WindowTest {
     void returnsGrid() {
         Window validWindow = TestHelper.makeWindow();
         Grid expected = new Grid(new GridLayout(Constants.GRIDSIZE, Constants.GRIDSIZE), handler, game);
+        validWindow.play();
         Grid actual = validWindow.getGrid();
         assertEquals(expected.getBound(), actual.getBound());
         assertEquals(expected.getCellGrid(), actual.getCellGrid());

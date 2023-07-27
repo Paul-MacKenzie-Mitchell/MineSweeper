@@ -2,6 +2,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import javax.swing.*;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,7 +12,8 @@ import static org.mockito.Mockito.when;
 class
 HandlerTest {
     Handler handler = new Handler();
-    Game game = TestHelper.makeGame();
+    JFrame frame = new JFrame();
+    Game game = new Game (Constants.WIDTH, Constants.HEIGHT, Constants.MINECOUNT, Constants.GRIDSIZE, handler, frame);
     Grid mockGrid = Mockito.mock(Grid.class);
 
     @BeforeEach
@@ -24,6 +27,7 @@ HandlerTest {
     }
     @AfterEach
     void reset() {
+        game.getWindow().getFrame().dispose();
         handler.setFlaggedCells(0);
         Grid.cellGrid.clear();
     }

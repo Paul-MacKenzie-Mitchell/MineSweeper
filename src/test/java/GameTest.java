@@ -3,11 +3,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import javax.swing.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 class GameTest {
-    Game game = TestHelper.makeGame();
+    JFrame frame = new JFrame();
+    Handler handler = new Handler();
+    Game game = new Game (Constants.WIDTH, Constants.HEIGHT, Constants.MINECOUNT, Constants.GRIDSIZE, handler, frame);
     Grid mockGrid = Mockito.mock(Grid.class);
     @BeforeEach
     void setup() {
@@ -25,7 +29,8 @@ class GameTest {
     }
     @Test
     void newGameWindowShouldNotBeNull() {
-        Window window = TestHelper.makeWindow();
+        Window window = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler,
+                game, frame);
         assertNotNull(game.getWindow());
     }
     @Test

@@ -13,7 +13,8 @@ import static org.mockito.Mockito.when;
 class WindowTest {
 
     Handler handler = new Handler();
-    Game game = TestHelper.makeGame();
+    JFrame frame = new JFrame();
+    Game game = new Game (Constants.WIDTH, Constants.HEIGHT, Constants.MINECOUNT, Constants.GRIDSIZE, handler, frame);
     Grid mockGrid = Mockito.mock(Grid.class);
 
 
@@ -53,15 +54,27 @@ class WindowTest {
     }
     @Test
     void createsWindowWithCorrectTitle() {
-        Window validWindow = TestHelper.makeWindow();
+        Window validWindow = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game, frame);
+
         String expected = "Minesweeper";
         String actual = validWindow.getTitle();
         assertEquals(expected, actual);
     }
     @Test
     void returnsJFrame() {
-        Window validWindow = TestHelper.makeWindow();
-        JFrame expected = TestHelper.makeJFrame();
+        Window validWindow = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game, frame);
+        JFrame expected = new JFrame();
+        expected.setPreferredSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
+        expected.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        expected.setResizable(false);
+        expected.setMinimumSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
+        expected.setMaximumSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
+        expected.setLocationRelativeTo(null);
+        JPanel panel = new Grid(new GridLayout(Constants.GRIDSIZE, Constants.GRIDSIZE), handler, game);
+        expected.setContentPane(panel);
+        expected.setTitle("Minesweeper | Mines: 10 - Flags: 0");
+        expected.pack();
+        expected.setVisible(true);
         JFrame actual = validWindow.getFrame();
         validWindow.update(0);
         assertEquals(expected.getWidth(), actual.getWidth());
@@ -71,7 +84,7 @@ class WindowTest {
     }
     @Test
     void returnsGrid() {
-        Window validWindow = TestHelper.makeWindow();
+        Window validWindow = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game, frame);
         Grid expected = new Grid(new GridLayout(Constants.GRIDSIZE, Constants.GRIDSIZE), handler, game);
         validWindow.play();
         Grid actual = validWindow.getGrid();

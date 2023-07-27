@@ -1,10 +1,13 @@
 import org.junit.jupiter.api.Test;
 
+import javax.swing.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CellTest {
     Handler handler =  new Handler();
-    Game game = TestHelper.makeGame();
+    JFrame frame = new JFrame();
+    Game game = new Game (Constants.WIDTH, Constants.HEIGHT, Constants.MINECOUNT, Constants.GRIDSIZE, handler, frame);
     Cell mineTopLeft = new Cell(CellType.MINE, 0, false, false, handler, game);
     Cell unClickedCellMiddle = new Cell(CellType.BLANK, game.getGridSize() * game.getGridSize()/ 2 + game.getGridSize() / 2, false, false, handler, game);
     Cell unFlaggedMiddle = new Cell(CellType.BLANK, game.getGridSize() * game.getGridSize()/ 2 + game.getGridSize() / 2, false, false, handler, game);

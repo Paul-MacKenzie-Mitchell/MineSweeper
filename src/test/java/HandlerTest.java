@@ -13,15 +13,15 @@ class
 HandlerTest {
     Handler handler = new Handler();
     JFrame frame = new JFrame();
-    Game game = new Game (Constants.WIDTH, Constants.HEIGHT, Constants.MINECOUNT, Constants.GRIDSIZE, handler, frame);
+    Game game = new Game (GameInfo.WIDTH, GameInfo.HEIGHT, GameInfo.MINECOUNT, GameInfo.getGridsize(), handler);
     Grid mockGrid = Mockito.mock(Grid.class);
 
     @BeforeEach
     void setup() {
         handler.setFlaggedCells(0);
         Grid.cellGrid.clear();
-        game.runGame(game, game.getFrame());
-        game.getWindow().play();
+        game.runGame(game);
+        game.playGame();
         when(mockGrid.getBound())
                 .thenReturn((game.getGridSize() * game.getGridSize()));
     }

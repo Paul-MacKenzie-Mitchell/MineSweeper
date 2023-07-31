@@ -1,10 +1,9 @@
-import javax.swing.*;
-
 public class Game {
 
     private boolean won = false;
     private boolean lost = false;
     private boolean menu = true;
+    private boolean difficulty = false;
 
     public boolean isPlay() {
         return play;
@@ -18,12 +17,12 @@ public class Game {
     private boolean exit = false;
     private final int width;
     private final int height;
-    private final int gridSize;
-    private final int mineCount;
+    private int gridSize;
+    private int mineCount;
     private Handler handler;
-    private Window window;
+    private MenuWindow window;
 
-    private final JFrame frame;
+
 
     public boolean isWon() {
         return won;
@@ -49,7 +48,7 @@ public class Game {
         this.handler = handler;
     }
 
-    public Window getWindow() {
+    public MenuWindow getWindow() {
         return window;
     }
 
@@ -60,10 +59,6 @@ public class Game {
 
     public int getMineCount() {
         return mineCount;
-    }
-
-    public JFrame getFrame() {
-        return frame;
     }
 
     public boolean isMenu() {
@@ -82,16 +77,48 @@ public class Game {
         this.exit = exit;
     }
 
-    public Game(int width, int height, int gridSize, int mineCount, Handler handler, JFrame frame) {
+    public boolean isDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(boolean difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public Game(int width, int height, int gridSize, int mineCount, Handler handler) {
         this.width = width;
         this.height = height;
         this.gridSize = gridSize;
         this.mineCount = mineCount;
         this.handler = handler;
-        this.frame = frame;
     }
     //creates JFrame and Grid Window
-    public void runGame(Game game, JFrame frame) {
-        this.window = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game, frame);
+    public void runGame(Game game) {
+        this.window = new MenuWindow(GameInfo.WIDTH, GameInfo.HEIGHT, "Minesweeper", handler,
+                game);
+        window.initializeMainMenu();
+    }
+    public void setMainMenu() {
+
+        window.resetWindow();
+        window.initializeMainMenu();
+        won = false;
+        lost = false;
+        menu = false;
+    }
+    public void playGame() {
+        menu = true;
+        if (play) {
+            window.getFrame().dispose();
+            mineCount = GameInfo.getMINECOUNT();
+            gridSize = GameInfo.getGridsize();
+            window.initializeBoard();
+            play = false;
+        }
+    }
+    public void setDifficulty() {
+        window.getFrame().dispose();
+        window.initializeDifficultyMenu();
+        difficulty = false;
     }
 }

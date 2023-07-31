@@ -5,17 +5,19 @@ import org.mockito.Mockito;
 
 import javax.swing.*;
 
+import java.awt.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 class GameTest {
     JFrame frame = new JFrame();
     Handler handler = new Handler();
-    Game game = new Game (Constants.WIDTH, Constants.HEIGHT, Constants.MINECOUNT, Constants.GRIDSIZE, handler, frame);
+    Game game = new Game (GameInfo.WIDTH, GameInfo.HEIGHT, GameInfo.MINECOUNT, GameInfo.getGridsize(), handler);
     Grid mockGrid = Mockito.mock(Grid.class);
     @BeforeEach
     void setup() {
-        game.runGame(game, game.getFrame());
+        game.runGame(game);
         when(mockGrid.getBound())
                 .thenReturn((game.getGridSize() * game.getGridSize()));
     }
@@ -29,8 +31,8 @@ class GameTest {
     }
     @Test
     void newGameWindowShouldNotBeNull() {
-        Window window = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler,
-                game, frame);
+        MenuWindow window = new MenuWindow(GameInfo.WIDTH, GameInfo.HEIGHT, "Minesweeper", handler,
+                game);
         assertNotNull(game.getWindow());
     }
     @Test

@@ -283,12 +283,12 @@ public class Handler {
                 cell.setFlagged(true);
                 cell.setText("⚑");
                 flaggedCells++;
-                Window.update(flaggedCells);
+                MenuWindow.update(flaggedCells);
             } else {
                 cell.setFlagged(false);
                 cell.setText("");
                 flaggedCells--;
-                Window.update(flaggedCells);
+                MenuWindow.update(flaggedCells);
             }
         }
     }

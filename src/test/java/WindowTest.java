@@ -14,14 +14,14 @@ class WindowTest {
 
     Handler handler = new Handler();
     JFrame frame = new JFrame();
-    Game game = new Game (Constants.WIDTH, Constants.HEIGHT, Constants.MINECOUNT, Constants.GRIDSIZE, handler, frame);
+    Game game = new Game (GameInfo.WIDTH, GameInfo.HEIGHT, GameInfo.MINECOUNT, GameInfo.getGridsize(), handler);
     Grid mockGrid = Mockito.mock(Grid.class);
 
 
     @BeforeEach
     public void setup() {
-        game.runGame(game, game.getFrame());
-        Window window = game.getWindow();
+        game.runGame(game);
+        MenuWindow window = game.getWindow();
         when(mockGrid.getBound())
                 .thenReturn((game.getGridSize() * game.getGridSize()));
     }
@@ -54,7 +54,7 @@ class WindowTest {
     }
     @Test
     void createsWindowWithCorrectTitle() {
-        Window validWindow = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game, frame);
+        MenuWindow validWindow = new MenuWindow(GameInfo.WIDTH, GameInfo.HEIGHT, "Minesweeper", handler, game);
 
         String expected = "Minesweeper";
         String actual = validWindow.getTitle();
@@ -62,15 +62,15 @@ class WindowTest {
     }
     @Test
     void returnsJFrame() {
-        Window validWindow = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game, frame);
+        MenuWindow validWindow = new MenuWindow(GameInfo.WIDTH, GameInfo.HEIGHT, "Minesweeper", handler, game);
         JFrame expected = new JFrame();
-        expected.setPreferredSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
+        expected.setPreferredSize(new Dimension(GameInfo.WIDTH, GameInfo.HEIGHT));
         expected.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         expected.setResizable(false);
-        expected.setMinimumSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
-        expected.setMaximumSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
+        expected.setMinimumSize(new Dimension(GameInfo.WIDTH, GameInfo.HEIGHT));
+        expected.setMaximumSize(new Dimension(GameInfo.WIDTH, GameInfo.HEIGHT));
         expected.setLocationRelativeTo(null);
-        JPanel panel = new Grid(new GridLayout(Constants.GRIDSIZE, Constants.GRIDSIZE), handler, game);
+        JPanel panel = new Grid(new GridLayout(GameInfo.getGridsize(), GameInfo.getGridsize()), handler, game);
         expected.setContentPane(panel);
         expected.setTitle("Minesweeper | Mines: 10 - Flags: 0");
         expected.pack();
@@ -84,9 +84,9 @@ class WindowTest {
     }
     @Test
     void returnsGrid() {
-        Window validWindow = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game, frame);
-        Grid expected = new Grid(new GridLayout(Constants.GRIDSIZE, Constants.GRIDSIZE), handler, game);
-        validWindow.play();
+        game.playGame();
+        MenuWindow validWindow = new MenuWindow(GameInfo.WIDTH, GameInfo.HEIGHT, "Minesweeper", handler, game);
+        Grid expected = new Grid(new GridLayout(GameInfo.getGridsize(), GameInfo.getGridsize()), handler, game);
         Grid actual = validWindow.getGrid();
         assertEquals(expected.getBound(), actual.getBound());
         assertEquals(expected.getCellGrid(), actual.getCellGrid());

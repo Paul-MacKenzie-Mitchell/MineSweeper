@@ -5,13 +5,15 @@ import org.mockito.Mockito;
 
 import javax.swing.*;
 
+import java.awt.*;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 class AppTest {
     Handler handler = new Handler();
     JFrame frame = new JFrame();
-    Game game = new Game (Constants.WIDTH, Constants.HEIGHT, Constants.MINECOUNT, Constants.GRIDSIZE, handler, frame);
+    Game game = new Game (GameInfo.WIDTH, GameInfo.HEIGHT, GameInfo.MINECOUNT, GameInfo.getGridsize(), handler);
     Grid mockGrid = Mockito.mock(Grid.class);
     @BeforeEach
     void setup() {
@@ -24,10 +26,11 @@ class AppTest {
     }
     @Test
     void shouldReturnValidWindowWhenGameRun() {
-        game.runGame(game, game.getFrame());
-        Window windowActual = game.getWindow();
-        Window windowExpected = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper",
-                handler, game, frame);
+        game.runGame(game);
+        MenuWindow windowActual = game.getWindow();
+
+        MenuWindow windowExpected = new MenuWindow(GameInfo.WIDTH, GameInfo.HEIGHT, "Minesweeper",
+                handler, game);
         assertEquals(windowExpected.getHeight(), windowActual.getHeight());
         assertEquals(windowExpected.getWidth(), windowActual.getHeight());
         assertEquals(windowExpected.getTitle(), windowActual.getTitle());

@@ -10,10 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class GridTest {
     Handler handler = new Handler();
     JFrame frame = new JFrame();
-    Game game = new Game (Constants.WIDTH, Constants.HEIGHT, Constants.MINECOUNT, Constants.GRIDSIZE, handler, frame);
+    Game game = new Game (GameInfo.WIDTH, GameInfo.HEIGHT, GameInfo.MINECOUNT, GameInfo.getGridsize(), handler);
 
-    Window window = new Window(Constants.WIDTH, Constants.HEIGHT, Constants.GRIDSIZE, "Minesweeper", handler, game, frame);
-    Grid grid = new Grid(new GridLayout(Constants.GRIDSIZE, Constants.GRIDSIZE), handler, game);
+    MenuWindow window = new MenuWindow(GameInfo.WIDTH, GameInfo.HEIGHT, "Minesweeper", handler, game);
+    Grid grid = new Grid(new GridLayout(GameInfo.getGridsize(), GameInfo.getGridsize()), handler, game);
     @BeforeEach
     void setup() {
         handler.setFlaggedCells(0);
@@ -28,7 +28,7 @@ class GridTest {
     void shouldCreateCorrectNumberOfCells() {
         grid.createCells(handler, game);
         int actualCellGridSize = grid.getCellGrid().size();
-        int expectedCellGridSize = Constants.GRIDSIZE * Constants.GRIDSIZE;
+        int expectedCellGridSize = GameInfo.getGridsize() * GameInfo.getGridsize();
         assertEquals(expectedCellGridSize, actualCellGridSize);
     }
     @Test
@@ -37,13 +37,13 @@ class GridTest {
         int minesActualCount = (int) grid.getCellGrid().stream()
                 .filter(x -> x.getCellType().equals(CellType.MINE))
                 .count();
-        int expectedMines = Constants.MINECOUNT;
+        int expectedMines = GameInfo.MINECOUNT;
         assertEquals(expectedMines, minesActualCount);
     }
     @Test
     void shouldReturnCorrectBound() {
         int actualBound = grid.getBound();
-        int expectedBound = Constants.GRIDSIZE * Constants.GRIDSIZE;
+        int expectedBound = GameInfo.getGridsize() * GameInfo.getGridsize();
         assertEquals(expectedBound, actualBound);
     }
 

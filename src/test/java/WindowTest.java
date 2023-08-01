@@ -84,10 +84,11 @@ class WindowTest {
     }
     @Test
     void returnsGrid() {
+        game.setPlay(true);
         game.playGame();
         MenuWindow validWindow = new MenuWindow(GameInfo.WIDTH, GameInfo.HEIGHT, "Minesweeper", handler, game);
         Grid expected = new Grid(new GridLayout(GameInfo.getGridsize(), GameInfo.getGridsize()), handler, game);
-        Grid actual = validWindow.getGrid();
+        Grid actual = game.getWindow().getGrid();
         assertEquals(expected.getBound(), actual.getBound());
         assertEquals(expected.getCellGrid(), actual.getCellGrid());
 //        assertEquals(expected.isPicked(), actual.isPicked());

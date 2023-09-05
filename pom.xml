@@ -30,6 +30,14 @@
 <!--    </properties>-->
 
     <dependencies>
+
+        <!-- https://mavenlibs.com/maven/dependency/com.github.moaxcp.x11/x11-client -->
+        <dependency>
+            <groupId>com.github.moaxcp.x11</groupId>
+            <artifactId>x11-client</artifactId>
+            <version>0.11.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>

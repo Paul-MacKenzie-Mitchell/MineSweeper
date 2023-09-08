@@ -59,9 +59,9 @@ public class Handler {
             Grid.cellGrid.get(x).setEnabled(false);
             Grid.cellGrid.get(x).setText("");
             if (Grid.cellGrid.get(x).getCellType() == CellType.MINE ) {
-                Grid.cellGrid.get(x).setText("\uD83D\uDCA3");
+                Grid.cellGrid.get(x).setText("B");
             }
-            cell.setText("\uD83D\uDCA3");
+            cell.setText("B");
         }
         game.getWindow().lose(game.getWindow());
 
@@ -269,7 +269,7 @@ public class Handler {
                     Grid.cellGrid.get(x).setText("\uD83D\uDCA3");
                 } else {
                     Grid.cellGrid.get(x).setEnabled(false);
-                    Grid.cellGrid.get(x).setText("\uD83E\uDD73");
+                    Grid.cellGrid.get(x).setText("W");
                 }
             }
             game.getWindow().win(game.getWindow());
@@ -281,7 +281,7 @@ public class Handler {
         if (!cell.isDiscovered()) {
             if (!cell.isFlagged()) {
                 cell.setFlagged(true);
-                cell.setText("⚑");
+                cell.setText("F");
                 flaggedCells++;
                 MenuWindow.update(flaggedCells);
             } else {

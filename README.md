@@ -1,7 +1,5 @@
 # MineSweeper
 
-[Source code on GitHub](https://github.com/kschuetz/kraftwerk)
-
 #### Table of Contents
 
 - [What is it?](#what-is-it)

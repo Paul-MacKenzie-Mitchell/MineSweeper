@@ -28,7 +28,7 @@ To install (if you are using Maven),
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkschuetz%2Fkraftwerk.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkschuetz%2Fkraftwerk?ref=badge_shield)
 
-_kraftwerk_ is distributed under [The MIT License](http://choosealicense.com/licenses/mit/).
+_MineSweeper_ is distributed under [The MIT License](http://choosealicense.com/licenses/mit/).
 
 The MIT License (MIT)
 

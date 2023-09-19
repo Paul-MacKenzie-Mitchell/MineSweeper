@@ -24,8 +24,6 @@ To install (if you are using Maven),
 
 # <a name="license">License</a>
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkschuetz%2Fkraftwerk.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkschuetz%2Fkraftwerk?ref=badge_shield)
-
 _MineSweeper_ is distributed under [The MIT License](http://choosealicense.com/licenses/mit/).
 
 The MIT License (MIT)

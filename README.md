@@ -1,5 +1,7 @@
 # MineSweeper
 
+https://central.sonatype.com/artifact/org.apache.maven/apache-maven?smo=true
+
 #### Table of Contents
 
 - [What is it?](#what-is-it)
@@ -10,15 +12,37 @@
 
 _Minesweeper_
 
-The property testing framework [Gauntlet](https://github.com/kschuetz/gauntlet) uses _kraftwerk_ for sample generation. However, _kraftwerk_ is designed to be general purpose and is not limited to the application of property testing.
-
-_MineSweeper_ requires Java 1.8 or higher.
+Minesweeper is a logic puzzle video game. The game features a grid of clickable squares, with hidden "mines" scattered throughout the board. The objective is to clear the board without detonating any mines, with help from clues about the number of neighboring mines in each field.
 
 # <a name="features">Features</a>
 
 # <a name="installation">Installation</a>
 
-To install (if you are using Maven),
+## Requirements
+
+- Java 8+
+- Maven 3.2.5 or later
+
+## Installation
+
+1. Clone the repo.
+
+```bash
+$ git clone https://github.com/Paul-MacKenzie-Mitchell/MineSweeper
+```
+
+2. cd to the MineSweeper folder, and then build it using the Maven.
+
+```bash
+$ cd MineSweeper
+$ mvn package
+```
+
+3. From the MineSweeper folder run the jar.
+
+````
+$ java -jar target/Minesweeper-1.0-SNAPSHOT.jar
+```
 
 # <a name="tutorial">Tutorial</a>
 
@@ -47,3 +71,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+````

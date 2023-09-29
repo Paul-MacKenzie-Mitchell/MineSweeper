@@ -15,8 +15,6 @@ _Minesweeper_
 
 Minesweeper is a logic puzzle video game. The game features a grid of clickable squares, with hidden "mines" scattered throughout the board. The objective is to clear the board without detonating any mines, with help from clues about the number of neighboring mines in each field.
 
-# <a name="features">Features</a>
-
 # <a name="installation">Installation</a>
 
 ## Requirements

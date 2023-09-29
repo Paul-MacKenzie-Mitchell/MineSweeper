@@ -6,6 +6,7 @@ https://central.sonatype.com/artifact/org.apache.maven/apache-maven?smo=true
 
 - [What is it?](#what-is-it)
 - [Installation](#installation)
+- [Tutorial] (#tutorial)
 - [License](#license)
 
 # <a name="what-is-it">What is it?</a>

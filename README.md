@@ -1,7 +1,5 @@
 # MineSweeper
 
-https://central.sonatype.com/artifact/org.apache.maven/apache-maven?smo=true
-
 #### Table of Contents
 
 - [What is it?](#what-is-it)

@@ -266,7 +266,7 @@ public class Handler {
             for (int x = 0; x < Grid.cellGrid.size(); x ++) {
                 if (Grid.cellGrid.get(x).getCellType() == CellType.MINE) {
                     Grid.cellGrid.get(x).setEnabled(false);
-                    Grid.cellGrid.get(x).setText("\uD83D\uDCA3");
+                    Grid.cellGrid.get(x).setText("B");
                 } else {
                     Grid.cellGrid.get(x).setEnabled(false);
                     Grid.cellGrid.get(x).setText("W");

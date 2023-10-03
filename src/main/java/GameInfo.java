@@ -19,11 +19,11 @@ public class GameInfo {
 
     private static int determineMinecount(String difficulty) {
         if (difficulty.equals("easy")) {
-            return (int)Math.round(gridsize * gridsize * .1);
+            return 10;
         } else if (difficulty.equals("moderate")) {
-            return (int)Math.round(gridsize * gridsize * .15);
+            return 22;
         } else {
-            return (int)Math.round(gridsize * gridsize * .20);
+            return 65;
         }
     }
 

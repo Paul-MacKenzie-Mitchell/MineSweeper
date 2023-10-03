@@ -60,6 +60,7 @@ public class MenuWindow {
     }
 
     public void initializeBoard() {
+        handler.setFlaggedCells(0);
         this.frame =  new JFrame();
 //        this.frame.revalidate();
         this.gridSize = GameInfo.getGridsize();

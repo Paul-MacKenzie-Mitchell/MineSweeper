@@ -34,9 +34,12 @@ class GridTest {
     @Test
     void shouldReturnMinesSetForGame() {
         grid.createCells(handler, game);
-        int minesActualCount = (int) grid.getCellGrid().stream()
-                .filter(x -> x.getCellType().equals(CellType.MINE))
-                .count();
+        int minesActualCount = 0;
+        for (int x = 0; x < grid.getCellGrid().size(); x++) {
+            if (grid.getCellGrid().get(x).getCellType().equals(CellType.MINE)) {
+                minesActualCount++;
+            }
+        }
         int expectedMines = GameInfo.MINECOUNT;
         assertEquals(expectedMines, minesActualCount);
     }

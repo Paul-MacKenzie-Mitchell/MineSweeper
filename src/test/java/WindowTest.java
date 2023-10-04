@@ -3,6 +3,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -15,15 +16,13 @@ class WindowTest {
     Handler handler = new Handler();
     JFrame frame = new JFrame();
     Game game = new Game (GameInfo.WIDTH, GameInfo.HEIGHT, GameInfo.MINECOUNT, GameInfo.getGridsize(), handler);
-    Grid mockGrid = Mockito.mock(Grid.class);
+    Grid grid = new Grid(new GridLayout(GameInfo.getGridsize(), GameInfo.getGridsize()), handler, game);
 
 
     @BeforeEach
     public void setup() {
         game.runGame(game);
         MenuWindow window = game.getWindow();
-        when(mockGrid.getBound())
-                .thenReturn((game.getGridSize() * game.getGridSize()));
     }
     @AfterEach
     void reset() {

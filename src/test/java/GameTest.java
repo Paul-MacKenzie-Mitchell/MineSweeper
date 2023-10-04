@@ -14,12 +14,10 @@ class GameTest {
     JFrame frame = new JFrame();
     Handler handler = new Handler();
     Game game = new Game (GameInfo.WIDTH, GameInfo.HEIGHT, GameInfo.MINECOUNT, GameInfo.getGridsize(), handler);
-    Grid mockGrid = Mockito.mock(Grid.class);
+    Grid grid = new Grid(new GridLayout(GameInfo.getGridsize(), GameInfo.getGridsize()), handler, game);
     @BeforeEach
     void setup() {
         game.runGame(game);
-        when(mockGrid.getBound())
-                .thenReturn((game.getGridSize() * game.getGridSize()));
     }
     @AfterEach
     void reset() {

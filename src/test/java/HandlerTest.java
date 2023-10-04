@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +15,7 @@ HandlerTest {
     Handler handler = new Handler();
     JFrame frame = new JFrame();
     Game game = new Game (GameInfo.WIDTH, GameInfo.HEIGHT, GameInfo.MINECOUNT, GameInfo.getGridsize(), handler);
-    Grid mockGrid = Mockito.mock(Grid.class);
+    Grid grid = new Grid(new GridLayout(GameInfo.getGridsize(), GameInfo.getGridsize()), handler, game);
 
     @BeforeEach
     void setup() {
@@ -23,8 +24,6 @@ HandlerTest {
         game.runGame(game);
         game.setPlay(true);
         game.playGame();
-        when(mockGrid.getBound())
-                .thenReturn((game.getGridSize() * game.getGridSize()));
     }
     @AfterEach
     void reset() {
@@ -66,13 +65,13 @@ HandlerTest {
     }
     @Test
     void unClickedUnFlaggedCellShouldNotBecomeDiscovered() {
-        Cell unClickedCellMiddle = new Cell(CellType.BLANK, mockGrid.getBound() / 2 + game.getGridSize() / 2, false, false, handler, game);
+        Cell unClickedCellMiddle = new Cell(CellType.BLANK, grid.getBound() / 2 + game.getGridSize() / 2, false, false, handler, game);
         assertFalse(unClickedCellMiddle.isDiscovered());
 
     }
     @Test
     void unClickedUnFlaggedCellShouldBecomeEnabled() {
-        Cell unClickedCellMiddle = new Cell(CellType.BLANK, mockGrid.getBound() / 2 + game.getGridSize() / 2, false, false, handler, game);
+        Cell unClickedCellMiddle = new Cell(CellType.BLANK, grid.getBound() / 2 + game.getGridSize() / 2, false, false, handler, game);
         assertTrue(unClickedCellMiddle.isEnabled());
 
     }
@@ -97,19 +96,19 @@ HandlerTest {
     }
     @Test
     void ifBlankCellBottomRightShouldAdd3ToQueue() {
-        Cell blankBottomRight = new Cell(CellType.BLANK, mockGrid.getBound() - game.getGridSize(), false, false, handler, game);
+        Cell blankBottomRight = new Cell(CellType.BLANK, grid.getBound() - game.getGridSize(), false, false, handler, game);
         handler.handleBlankCell(blankBottomRight.getPosition(), game);
         assertEquals(3, handler.getQueue().size());
     }
     @Test
     void ifBlankCellBottomLeftShouldAdd3ToQueue() {
-        Cell blankBottomLeft = new Cell(CellType.BLANK, mockGrid.getBound() - 1, false, false, handler, game);
+        Cell blankBottomLeft = new Cell(CellType.BLANK, grid.getBound() - 1, false, false, handler, game);
         handler.handleBlankCell(blankBottomLeft.getPosition(), game);
         assertEquals(3, handler.getQueue().size());
     }
     @Test
     void ifBlankCellBottomRowMiddleShouldAdd5ToQueue() {
-        Cell blankBottomRight = new Cell(CellType.BLANK, mockGrid.getBound() - game.getGridSize() / 2, false,false, handler, game);
+        Cell blankBottomRight = new Cell(CellType.BLANK, grid.getBound() - game.getGridSize() / 2, false,false, handler, game);
         handler.handleBlankCell(blankBottomRight.getPosition(), game);
         assertEquals(5, handler.getQueue().size());
     }
@@ -127,7 +126,7 @@ HandlerTest {
     }
     @Test
     void ifBlankCellInMiddleShouldQueEight() {
-        Cell blankMiddle = new Cell(CellType.BLANK, mockGrid.getBound() / 2 + game.getGridSize() / 2, false, false, handler, game);
+        Cell blankMiddle = new Cell(CellType.BLANK, grid.getBound() / 2 + game.getGridSize() / 2, false, false, handler, game);
         handler.handleBlankCell(blankMiddle.getPosition(), game);
         assertEquals(8, handler.getQueue().size());
     }
@@ -325,7 +324,7 @@ HandlerTest {
         int cells = (int) Grid.cellGrid.stream()
                 .filter(x -> !x.isEnabled())
                 .count();
-        assertEquals(cells, mockGrid.getBound());
+        assertEquals(cells, grid.getBound());
     }
     @Test
     void shouldNotWinIfConditionsNotMet() {

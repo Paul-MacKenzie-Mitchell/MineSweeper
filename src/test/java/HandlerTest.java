@@ -1,14 +1,13 @@
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 class
 HandlerTest {
@@ -35,10 +34,6 @@ HandlerTest {
     void clickedUnFlaggedCellShouldBecomeDiscovered() {
         Cell mineTopLeft = new Cell(CellType.MINE, 0, false,false, handler, game);
         handler.click(mineTopLeft, game);
-//        ActionEvent e = new ActionEvent(MouseEvent,);
-//        JButton buttonToSimulateClicking = new JButton(...);
-//        buttonToSimulateClicking.doClick(); // As simple as that !;
-//        game.getWindow().actionPerformed(e);
         assertTrue(mineTopLeft.isDiscovered());
     }
     @Test
@@ -132,12 +127,10 @@ HandlerTest {
     }
     @Test
     void ifQueueIsEmptyAddNothingToCurrent() {
-        Handler handlerMock = Mockito.mock(Handler.class);
-        ArrayList<Cell> queueMock = new ArrayList<>();
+        ArrayList queue = new ArrayList();
         ArrayList<Cell> current = new ArrayList<>();
-        when(handlerMock.getQueue())
-                .thenReturn(queueMock);
-        Handler.addToCurrentList(queueMock, current);
+
+        Handler.addToCurrentList(queue, current);
         assertEquals(0, current.size());
     }
     @Test
@@ -148,13 +141,11 @@ HandlerTest {
     }
     @Test
     void getCurrentShouldReturnLisContaining1CellIContains1Cell() {
-        Handler handlerMock = Mockito.mock(Handler.class);
+        Handler handler = new Handler();
         ArrayList<Cell> current = handler.getCurrent();
         ArrayList<Cell> queue = handler.getQueue();
         Cell blankRightColumn =  new Cell(CellType.BLANK, game.getGridSize() * 3 - 1, false, false, handler, game);
         queue.add(blankRightColumn);
-        when(handlerMock.getQueue())
-                .thenReturn(queue);
         Handler.addToCurrentList(queue, current);
         current = handler.getCurrent();
         int numCellsInCurrent = current.size();
@@ -162,63 +153,54 @@ HandlerTest {
     }
     @Test
     void shouldAddNumberOfCellsInQueueToCurrent() {
-        Handler handlerMock = Mockito.mock(Handler.class);
-        Cell blankRightColumn =  new Cell(CellType.BLANK, game.getGridSize() * 3 - 1, false, false, handler, game);
-        ArrayList<Cell> queueMock = new ArrayList<>();
-        queueMock.add(blankRightColumn);
-        ArrayList<Cell> current = new ArrayList<>();
-        when(handlerMock.getQueue())
-                .thenReturn(queueMock);
-        Handler.addToCurrentList(queueMock, current);
-        assertEquals(1, current.size());
-    }
-    @Test
-    void shouldClearQueueAfterAddingCellsToCurrent() {
-        Handler handlerMock = Mockito.mock(Handler.class);
+        Handler handler = new Handler();
         Cell blankRightColumn =  new Cell(CellType.BLANK, game.getGridSize() * 3 - 1, false, false, handler, game);
         ArrayList<Cell> queue = new ArrayList<>();
         queue.add(blankRightColumn);
         ArrayList<Cell> current = new ArrayList<>();
-        when(handlerMock.getQueue())
-                .thenReturn(queue);
+        Handler.addToCurrentList(queue, current);
+        assertEquals(1, current.size());
+    }
+    @Test
+    void shouldClearQueueAfterAddingCellsToCurrent() {
+        Handler handler = new Handler();
+        Cell blankRightColumn =  new Cell(CellType.BLANK, game.getGridSize() * 3 - 1, false, false, handler, game);
+        ArrayList<Cell> queue = new ArrayList<>();
+        queue.add(blankRightColumn);
+        ArrayList<Cell> current = new ArrayList<>();
         Handler.addToCurrentList(queue, current);
         assertEquals(0, queue.size());
     }
     @Test
     void shouldRemoveCellsInCurrentAfterRevealCells() {
-        Handler handlerMock = Mockito.mock(Handler.class);
+        Handler handler = new Handler();
         Cell blankRightColumn =  new Cell(CellType.BLANK, game.getGridSize() * 3 - 1, false, false, handler, game);
         ArrayList<Cell> current = new ArrayList<>();
         current.add(blankRightColumn);
-        when(handlerMock.getCurrent())
-                .thenReturn(current);
         Handler.revealCells(current, game);
         assertEquals(0, current.size());
     }
     @Test
     void shouldMakeAdjacentBlankCellDiscovered() {
-        Handler handlerMock = Mockito.mock(Handler.class);
+        Handler handler = new Handler();
         Cell blankRightColumn =  new Cell(CellType.BLANK, game.getGridSize() * 3 - 1, false, false, handler, game);
         ArrayList<Cell> current = new ArrayList<>();
         current.add(blankRightColumn);
-        when(handlerMock.getCurrent())
-                .thenReturn(current);
         Handler.revealCells(current, game);
         assertTrue(blankRightColumn.isDiscovered());
     }
     @Test
     void adjacentBlankCellShouldNotBeEnabled() {
-        Handler handlerMock = Mockito.mock(Handler.class);
+        Handler handler = new Handler();
         Cell blankRightColumn = new Cell(CellType.BLANK, game.getGridSize() * 3 - 1, false, false, handler, game);
         ArrayList<Cell> current = new ArrayList<>();
         current.add(blankRightColumn);
-        when(handlerMock.getCurrent())
-                .thenReturn(current);
         Handler.revealCells(current, game);
         assertFalse(blankRightColumn.isEnabled());
     }
     @Test
     void numberCellInTopLeftCornerSurroundedShouldReturnDangerCount3() {
+
         Cell numberTopLeftCorner = new Cell(CellType.NUMBER, 0, false, false, handler, game);
         Grid.cellGrid.set(numberTopLeftCorner.getPosition() + 1, new Cell(CellType.MINE, numberTopLeftCorner.getPosition() + 1, false, false, handler, game));
         Grid.cellGrid.set(numberTopLeftCorner.getPosition() + game.getGridSize(), new Cell(CellType.MINE, numberTopLeftCorner.getPosition() + game.getGridSize(), false, false, handler, game));

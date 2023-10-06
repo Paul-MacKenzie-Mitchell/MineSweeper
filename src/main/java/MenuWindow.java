@@ -67,11 +67,11 @@ public class MenuWindow {
         this.grid = new Grid(new GridLayout(gridSize, gridSize), handler, game);
         this.panel1 = grid;
         frame.setContentPane(panel1);
-        this.frame.setTitle(title + " | Difficulty: " + GameInfo.difficulty + " | Mines: " + GameInfo.MINECOUNT + " - Flags: 0" );
+        this.frame.setTitle(title + " | Difficulty: " + GameInfo.difficulty + " | Mines: " + GameInfo.MINECOUNT + " - Flags: 0");
+        this.frame.setResizable(true);
         this.frame.setSize(width,height);
         this.frame.setLocationRelativeTo(null);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setResizable(false);
         this.frame.setVisible(true);
     }
     public void initializeMainMenu() {
@@ -122,7 +122,7 @@ public class MenuWindow {
         this.frame.setSize(width,height);
         this.frame.setLocationRelativeTo(null);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setResizable(false);
+        this.frame.setResizable(true);
         this.frame.add(panel1, BorderLayout.CENTER);
         this.frame.add(panel2, BorderLayout.SOUTH);
 

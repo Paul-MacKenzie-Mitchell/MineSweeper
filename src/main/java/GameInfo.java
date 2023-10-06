@@ -1,8 +1,8 @@
 public class GameInfo {
 
     public static String difficulty = "easy";
-    public static final int WIDTH = 720;
-    public static final int HEIGHT = 720;
+    public static final int WIDTH = 800;
+    public static final int HEIGHT = 800;
     private static int gridsize = determineGridSize(difficulty);
     public static int MINECOUNT = determineMinecount(difficulty);
 

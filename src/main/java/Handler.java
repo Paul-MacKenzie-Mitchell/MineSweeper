@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Handler {
@@ -81,7 +82,12 @@ public class Handler {
         } else {
             dangerCount = setDangerCounterNotOnEdge(position, game);
         }
+//        cell.setOpaque(true);
+        cell.setBackground(Color.BLUE);
+        cell.setForeground(Color.BLUE);
         cell.setText(String.valueOf(dangerCount));
+        cell.repaint();
+
     }
 
     public void handleBlankCell(int position, Game game) {
@@ -282,11 +288,18 @@ public class Handler {
             if (!cell.isFlagged()) {
                 cell.setFlagged(true);
                 cell.setText("F");
+                cell.setOpaque(true);
+                cell.setBackground(Color.RED);
+                cell.setForeground(Color.RED);
+                cell.repaint();
                 flaggedCells++;
                 MenuWindow.update(flaggedCells);
             } else {
                 cell.setFlagged(false);
                 cell.setText("");
+                cell.setOpaque(false);
+                cell.setBackground(null);
+                cell.setForeground(null);
                 flaggedCells--;
                 MenuWindow.update(flaggedCells);
             }

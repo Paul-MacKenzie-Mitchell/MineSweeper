@@ -32,22 +32,22 @@ class WindowTest {
     }
     @Test
     void createsValidWindowHeight() {
-        assertEquals(720, game.getWindow().getHeight());
+        assertEquals(800, game.getWindow().getHeight());
     }
     @Test
     void doesNotCreateInvalidWindowHeight() {
-        assertTrue(game.getWindow().getHeight() < 721);
-        assertTrue(game.getWindow().getHeight() > 719);
+        assertTrue(game.getWindow().getHeight() < 801);
+        assertTrue(game.getWindow().getHeight() > 799);
     }
 
     @Test
     void createsValidWindowWidth() {
-        assertEquals(720, game.getWindow().getWidth());
+        assertEquals(800, game.getWindow().getWidth());
     }
     @Test
     void doesNotCreateInvalidWindowWidth() {
-        assertTrue(game.getWindow().getWidth() < 721);
-        assertTrue(game.getWindow().getHeight() > 719);
+        assertTrue(game.getWindow().getWidth() < 801);
+        assertTrue(game.getWindow().getHeight() > 799);
     }
     @Test
     void createsWindowWithCorrectTitle() {

@@ -62,6 +62,7 @@ public class Handler {
             if (Grid.cellGrid.get(x).getCellType() == CellType.MINE ) {
                 Grid.cellGrid.get(x).setText("B");
             }
+            cell.setFont(new Font("Calibri", Font.PLAIN, 8));
             cell.setText("B");
         }
         game.getWindow().lose(game.getWindow());
@@ -82,10 +83,22 @@ public class Handler {
         } else {
             dangerCount = setDangerCounterNotOnEdge(position, game);
         }
-//        cell.setOpaque(true);
-        cell.setBackground(Color.BLUE);
-        cell.setForeground(Color.BLUE);
+        cell.setOpaque(false);
+        cell.setFont(new Font("Calibri", Font.PLAIN, 8));
         cell.setText(String.valueOf(dangerCount));
+        if (dangerCount == 1) {
+            cell.setBackground(Color.BLUE);
+            cell.setForeground(Color.BLUE);
+        } else if (dangerCount == 2) {
+            cell.setBackground(Color.YELLOW);
+            cell.setForeground(Color.YELLOW);
+        } else if (dangerCount == 3) {
+            cell.setBackground(Color.ORANGE);
+            cell.setForeground(Color.ORANGE);
+        } else if (dangerCount >= 4) {
+            cell.setBackground(Color.RED);
+            cell.setForeground(Color.RED);
+        }
         cell.repaint();
 
     }
@@ -272,9 +285,11 @@ public class Handler {
             for (int x = 0; x < Grid.cellGrid.size(); x ++) {
                 if (Grid.cellGrid.get(x).getCellType() == CellType.MINE) {
                     Grid.cellGrid.get(x).setEnabled(false);
+                    Grid.cellGrid.get(x).setFont(new Font("Calibri", Font.PLAIN, 8));
                     Grid.cellGrid.get(x).setText("B");
                 } else {
                     Grid.cellGrid.get(x).setEnabled(false);
+                    Grid.cellGrid.get(x).setFont(new Font("Calibri", Font.PLAIN, 8));
                     Grid.cellGrid.get(x).setText("W");
                 }
             }
@@ -290,7 +305,7 @@ public class Handler {
                 cell.setText("F");
                 cell.setOpaque(true);
                 cell.setBackground(Color.RED);
-                cell.setForeground(Color.RED);
+                cell.setFont(new Font("Calibri", Font.PLAIN, 8));
                 cell.repaint();
                 flaggedCells++;
                 MenuWindow.update(flaggedCells);

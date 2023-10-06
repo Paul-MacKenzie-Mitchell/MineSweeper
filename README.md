@@ -25,20 +25,20 @@ Minesweeper is a logic puzzle video game. The game features a grid of clickable 
 1. Clone the repo.
 
 ```bash
-$ git clone git@github.com:Paul-MacKenzie-Mitchell/MineSweeper.git
+git clone git@github.com:Paul-MacKenzie-Mitchell/MineSweeper.git
 ```
 
 2. cd to the MineSweeper folder, and then build it using the Maven.
 
 ```bash
-$ cd MineSweeper
-$ mvn package
+cd MineSweeper
+mvn package
 ```
 
 3. From the MineSweeper folder run the jar.
 
-```
-$ java -jar target/Minesweeper-1.0-SNAPSHOT.jar
+```bash
+java -jar target/Minesweeper-1.0-SNAPSHOT.jar
 ```
 
 # <a name="tutorial">Tutorial</a>
